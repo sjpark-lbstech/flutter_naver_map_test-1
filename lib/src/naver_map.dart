@@ -8,6 +8,10 @@ class NaverMap extends StatefulWidget {
     this.onMapCreated,
     this.onMapTab,
     this.onMapLongTab,
+    this.onMapDoubleTab,
+    this.onMapTwoFingerTab,
+    this.onSymbolTab,
+    this.originalBehaviorDisable = false,
     this.initialCameraPosition,
     this.mapType = MapType.Basic,
     this.liteModeEnable = false,
@@ -159,6 +163,20 @@ class NaverMap extends StatefulWidget {
   /// 지도에 표시될 마커의 리스트입니다.
   final List<Marker> markers;
 
+  /// 지도가 더블탭될때 콜백되는 메서드
+  final OnMapDoubleTab onMapDoubleTab;
+
+  /// 더블탭 이벤트, 투핑거탭 이벤트 시에 기본 동작이 동작되는 것을 막을 수 있습니다.
+  ///
+  ///
+  /// 온전히 커스터마이징하기 위해서 해당 옵션을 true 로 변경하세요.
+  /// 기본값은 false 입니다.
+  final bool originalBehaviorDisable;
+
+  /// 지도가 두 손가락으로 탭 되었을때 호출되는 콜백 메서드.
+  final OnMapTwoFingerTab onMapTwoFingerTab;
+
+  final OnSymbolTab onSymbolTab;
 
   @override
   _NaverMapState createState() => _NaverMapState();
@@ -260,6 +278,24 @@ class _NaverMapState extends State<NaverMap> {
       widget.onMapLongTab(latLng);
   }
 
+  void _mapDoubleTab(LatLng latLng){
+    assert(latLng != null);
+    if(widget.onMapDoubleTab != null)
+      widget.onMapDoubleTab(latLng);
+  }
+
+  void _mapTwoFingerTab(LatLng latLng){
+    assert(latLng != null);
+    if(widget.onMapTwoFingerTab != null)
+      widget.onMapTwoFingerTab(latLng);
+  }
+
+  void _symbolTab(LatLng position, String caption){
+    assert(position != null && caption != null);
+    if(widget.onSymbolTab != null)
+      widget.onSymbolTab(position, caption);
+  }
+
 }
 
 
@@ -279,6 +315,7 @@ class _NaverMapOptions {
     this.scrollGestureEnable,
     this.rotationGestureEnable,
     this.isDevMode,
+    this.originalBehaviorDisable,
   });
 
   static _NaverMapOptions fromWidget(NaverMap map) {
@@ -297,6 +334,7 @@ class _NaverMapOptions {
       tiltGestureEnable: map.tiltGestureEnable,
       zoomGestureEnable: map.zoomGestureEnable,
       isDevMode: map.isDevMode,
+      originalBehaviorDisable: map.originalBehaviorDisable,
     );
   }
 
@@ -315,6 +353,7 @@ class _NaverMapOptions {
   final bool zoomGestureEnable;
   final bool locationButtonEnable;
   final bool isDevMode;
+  final bool originalBehaviorDisable;
 
   Map<String, dynamic> toMap(){
     final Map<String, dynamic> optionsMap = <String, dynamic>{};
@@ -342,6 +381,7 @@ class _NaverMapOptions {
     addIfNonNull('tiltGestureEnable', tiltGestureEnable);
     addIfNonNull('locationButtonEnable', locationButtonEnable);
     addIfNonNull('isDevMode', isDevMode);
+    addIfNonNull('originalBehaviorDisable', originalBehaviorDisable);
     return optionsMap;
   }
 

@@ -46,9 +46,7 @@ public class NaverMapController implements
         MethodChannel.MethodCallHandler,
         Application.ActivityLifecycleCallbacks,
         NaverMapOptionSink,
-        Overlay.OnClickListener,
-        NaverMap.OnMapClickListener,
-        NaverMap.OnMapLongClickListener {
+        Overlay.OnClickListener {
 
     int id;
     private final AtomicInteger activityState;
@@ -61,6 +59,7 @@ public class NaverMapController implements
     private MethodChannel.Result mapReadyResult;
     private List initialMarkers;
     private HashMap<String, Object> markers = new HashMap<>();
+    private NaverMapListeners listeners;
 
     NaverMapController(
             int id,
@@ -76,6 +75,7 @@ public class NaverMapController implements
         registrarActivityHashCode = registrar.activity().hashCode();
         methodChannel = new MethodChannel(registrar.messenger(), "flutter_naver_map_test_"+ id);
         methodChannel.setMethodCallHandler(this);
+        listeners = new NaverMapListeners(methodChannel);
         this.initialMarkers = initialMarkers;
     }
 
@@ -88,8 +88,11 @@ public class NaverMapController implements
         }
         // 맵 완전히 만들어진 이후에 마커 추가.
         setInitialMarkers();
-        naverMap.setOnMapClickListener(this);
-        naverMap.setOnMapLongClickListener(this);
+        naverMap.setOnMapClickListener(listeners);
+        naverMap.setOnMapLongClickListener(listeners);
+        naverMap.setOnMapDoubleTapListener(listeners);
+        naverMap.setOnMapTwoFingerTapListener(listeners);
+        naverMap.setOnSymbolClickListener(listeners);
     }
 
     @Override
@@ -414,17 +417,4 @@ public class NaverMapController implements
         }
     }
 
-    @Override
-    public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
-        final Map<String, Object> arguments = new HashMap<>(2);
-        arguments.put("position", Convert.latLngToJson(latLng));
-        methodChannel.invokeMethod("map#onTap", arguments);
-    }
-
-    @Override
-    public void onMapLongClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
-        final Map<String, Object> arguments = new HashMap<>(2);
-        arguments.put("position", Convert.latLngToJson(latLng));
-        methodChannel.invokeMethod("map#onLongTap", arguments);
-    }
 }

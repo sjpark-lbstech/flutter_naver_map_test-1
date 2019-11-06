@@ -1,7 +1,6 @@
 package kr.co.lbstech.flutter_naver_map_test;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.List;
 import java.util.Map;
@@ -43,6 +42,7 @@ public class NaverMapFactory extends PlatformViewFactory {
         if(params.containsKey("markersToAdd")){
             builder.setInitialMarkers((List) params.get("markersToAdd"));
         }
+
         return builder.build(i, context, activityState, pluginRegistrar);
     }
 }

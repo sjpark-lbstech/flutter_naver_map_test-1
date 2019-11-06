@@ -55,6 +55,9 @@ class _TestMainState extends State<TestMain> {
         onMapCreated: _onMapCreated,
         onMapTab: _onMapTab,
         onMapLongTab: _onMapLongTab,
+        onMapDoubleTab: _onMapDoubleTab,
+        onMapTwoFingerTab: _onMapTwoFingerTab,
+        onSymbolTab: _onSymbolTab,
         mapType: _toggle
             ? MapType.Navi
             : MapType.Basic,
@@ -100,5 +103,17 @@ class _TestMainState extends State<TestMain> {
 
   void _onMapLongTab(LatLng latLng) {
     print('long Tab : ' + latLng.toString());
+  }
+
+  void _onMapDoubleTab(LatLng latLng) {
+    print('double Tab : ' + latLng.toString());
+  }
+
+  void _onMapTwoFingerTab(LatLng latLng) {
+    print('two finger Tab : ' + latLng.toString());
+  }
+
+  void _onSymbolTab(LatLng position, String caption) {
+    print('symbol Tab - LatLng : $position, caption : $caption');
   }
 }

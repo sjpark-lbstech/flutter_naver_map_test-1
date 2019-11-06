@@ -1,15 +1,11 @@
 package kr.co.lbstech.flutter_naver_map_test;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.geometry.LatLngBounds;
 import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.CameraUpdate;
-import com.naver.maps.map.internal.OverlayImageLoader;
 import com.naver.maps.map.overlay.OverlayImage;
 
 import java.util.Arrays;
@@ -49,6 +45,8 @@ public class Convert {
             sink.setTiltGestureEnable((Boolean) options.get("tiltGestureEnable"));
         if(options.containsKey("locationButtonEnable"))
             sink.setLocationButtonEnable((Boolean) options.get("locationButtonEnable"));
+        if(options.containsKey("originalBehaviorDisable"))
+            NaverMapListeners.setOriginalBehaviorDisable((Boolean) options.get("originalBehaviorDisable"));
     }
 
     @SuppressWarnings("unchecked")

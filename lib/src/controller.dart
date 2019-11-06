@@ -43,6 +43,18 @@ class NaverMapController{
         LatLng latLng = LatLng._fromJson(call.arguments['position']);
         _naverMapState._mapLongTab(latLng);
         break;
+      case 'map#onDoubleTap':
+        LatLng latLng = LatLng._fromJson(call.arguments['position']);
+        _naverMapState._mapDoubleTab(latLng);
+        break;
+      case 'map#onTwoFingerTap':
+        LatLng latLng = LatLng._fromJson(call.arguments['position']);
+        _naverMapState._mapTwoFingerTab(latLng);
+        break;
+      case 'map#onSymbolClick':
+        LatLng position = LatLng._fromJson(call.arguments['position']);
+        String caption = call.arguments['caption'];
+        _naverMapState._symbolTab(position, caption);
     }
   }
 
