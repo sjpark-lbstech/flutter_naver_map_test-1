@@ -1,7 +1,7 @@
 package kr.co.lbstech.flutter_naver_map_test;
 
 import android.graphics.PointF;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.NaverMap;
@@ -24,11 +24,11 @@ public class NaverMapListeners implements
     private static boolean originalBehaviorDisable = false;
 
 
-    NaverMapListeners(MethodChannel channel){
+    NaverMapListeners(MethodChannel channel) {
         this.channel = channel;
     }
 
-    static void setOriginalBehaviorDisable(boolean originalBehaviorDisable){
+    static void setOriginalBehaviorDisable(boolean originalBehaviorDisable) {
         NaverMapListeners.originalBehaviorDisable = originalBehaviorDisable;
     }
 

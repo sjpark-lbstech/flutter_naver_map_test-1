@@ -1,6 +1,4 @@
-
 part of flutter_naver_map;
-
 
 class NaverMap extends StatefulWidget {
   const NaverMap({
@@ -27,8 +25,9 @@ class NaverMap extends StatefulWidget {
     this.zoomGestureEnable = true,
     this.locationButtonEnable = false,
     this.isDevMode = true,
+    this.locationTrackingMode = LocationTrackingMode.none,
     this.markers,
-  }) : super(key : key);
+  }) : super(key: key);
 
   /// 지도가 완전히 만들어진 후에 컨트롤러를 파라미터로 가지는 콜백.
   /// 해당 콜백이 호출되기 전에는 지도가 만들어지는 중이다.
@@ -178,14 +177,14 @@ class NaverMap extends StatefulWidget {
 
   final OnSymbolTab onSymbolTab;
 
+  final LocationTrackingMode locationTrackingMode;
+
   @override
   _NaverMapState createState() => _NaverMapState();
 }
 
 class _NaverMapState extends State<NaverMap> {
-
-  Completer<NaverMapController> _controller =
-      Completer<NaverMapController>();
+  Completer<NaverMapController> _controller = Completer<NaverMapController>();
   _NaverMapOptions _naverMapOptions;
 
   Map<String, Marker> _markers = <String, Marker>{};
@@ -197,15 +196,15 @@ class _NaverMapState extends State<NaverMap> {
     _markers = _keyByMarkerId(widget.markers);
   }
 
-  Future<void> onPlatformViewCreated(int id) async{
+  Future<void> onPlatformViewCreated(int id) async {
     final NaverMapController controller = await NaverMapController.init(
       id,
       widget.initialCameraPosition,
       this,
     );
-    if(_controller.isCompleted) _controller = Completer<NaverMapController>();
+    if (_controller.isCompleted) _controller = Completer<NaverMapController>();
     _controller.complete(controller);
-    if(widget.onMapCreated != null){
+    if (widget.onMapCreated != null) {
       widget.onMapCreated(controller);
     }
   }
@@ -213,12 +212,13 @@ class _NaverMapState extends State<NaverMap> {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> createParams = <String, dynamic>{
-      'initialCameraPosition' : widget.initialCameraPosition?.toMap(),
-      'options' : _naverMapOptions.toMap(),
-      'markersToAdd' : _serializeMarkerSet(widget.markers),
+      'initialCameraPosition': widget.initialCameraPosition?.toMap(),
+      'options': _naverMapOptions.toMap(),
+      'markersToAdd': _serializeMarkerSet(widget.markers),
+      'locationTrackingMode': widget.locationTrackingMode.index,
     };
 
-    if(defaultTargetPlatform == TargetPlatform.android){
+    if (defaultTargetPlatform == TargetPlatform.android) {
       AndroidView view = AndroidView(
         viewType: VIEW_TYPE,
         onPlatformViewCreated: onPlatformViewCreated,
@@ -239,17 +239,16 @@ class _NaverMapState extends State<NaverMap> {
     _updateMarkers();
   }
 
-  void _updateOptions() async{
+  void _updateOptions() async {
     final _NaverMapOptions newOption = _NaverMapOptions.fromWidget(widget);
-    final Map<String, dynamic> updates =
-        _naverMapOptions.updatesMap(newOption);
-    if(updates.isEmpty) return;
+    final Map<String, dynamic> updates = _naverMapOptions.updatesMap(newOption);
+    if (updates.isEmpty) return;
     final NaverMapController controller = await _controller.future;
     controller._updateMapOptions(updates);
     _naverMapOptions = newOption;
   }
 
-  void _updateMarkers() async{
+  void _updateMarkers() async {
     final NaverMapController controller = await _controller.future;
     controller._updateMarkers(_MarkerUpdates.from(
       _markers.values.toSet(),
@@ -258,9 +257,9 @@ class _NaverMapState extends State<NaverMap> {
     _markers = _keyByMarkerId(widget.markers);
   }
 
-  void _markerTabbed(String markerId){
+  void _markerTabbed(String markerId) {
     assert(markerId != null);
-    if(_markers[markerId]?.onMarkerTab != null) {
+    if (_markers[markerId]?.onMarkerTab != null) {
       _markers[markerId].onMarkerTab(_markers[markerId]);
     }
   }
@@ -272,32 +271,26 @@ class _NaverMapState extends State<NaverMap> {
     }
   }
 
-  void _mapLongTab(LatLng latLng){
+  void _mapLongTab(LatLng latLng) {
     assert(latLng != null);
-    if(widget.onMapLongTab != null)
-      widget.onMapLongTab(latLng);
+    if (widget.onMapLongTab != null) widget.onMapLongTab(latLng);
   }
 
-  void _mapDoubleTab(LatLng latLng){
+  void _mapDoubleTab(LatLng latLng) {
     assert(latLng != null);
-    if(widget.onMapDoubleTab != null)
-      widget.onMapDoubleTab(latLng);
+    if (widget.onMapDoubleTab != null) widget.onMapDoubleTab(latLng);
   }
 
-  void _mapTwoFingerTab(LatLng latLng){
+  void _mapTwoFingerTab(LatLng latLng) {
     assert(latLng != null);
-    if(widget.onMapTwoFingerTab != null)
-      widget.onMapTwoFingerTab(latLng);
+    if (widget.onMapTwoFingerTab != null) widget.onMapTwoFingerTab(latLng);
   }
 
-  void _symbolTab(LatLng position, String caption){
+  void _symbolTab(LatLng position, String caption) {
     assert(position != null && caption != null);
-    if(widget.onSymbolTab != null)
-      widget.onSymbolTab(position, caption);
+    if (widget.onSymbolTab != null) widget.onSymbolTab(position, caption);
   }
-
 }
-
 
 class _NaverMapOptions {
   _NaverMapOptions({
@@ -355,7 +348,7 @@ class _NaverMapOptions {
   final bool isDevMode;
   final bool originalBehaviorDisable;
 
-  Map<String, dynamic> toMap(){
+  Map<String, dynamic> toMap() {
     final Map<String, dynamic> optionsMap = <String, dynamic>{};
 
     void addIfNonNull(String fieldName, dynamic value) {
@@ -364,14 +357,14 @@ class _NaverMapOptions {
       }
     }
 
-    List<int> inactiveLayerIndexs = [];
-    activeLayers?.forEach((layer)=>inactiveLayerIndexs.add(layer.index));
+    List<int> inactiveLayerIndices = [];
+    activeLayers?.forEach((layer) => inactiveLayerIndices.add(layer.index));
 
     addIfNonNull('mapType', mapType?.index);
     addIfNonNull('liteModeEnable', liteModeEnable);
     addIfNonNull('nightModeEnable', nightModeEnable);
     addIfNonNull('indoorEnable', indoorEnable);
-    addIfNonNull('activeLayers', inactiveLayerIndexs);
+    addIfNonNull('activeLayers', inactiveLayerIndices);
     addIfNonNull('buildingHeight', buildingHeight);
     addIfNonNull('symbolScale', symbolScale);
     addIfNonNull('symbolPerspectiveRatio', symbolPerspectiveRatio);
@@ -390,7 +383,6 @@ class _NaverMapOptions {
 
     return newOptions.toMap()
       ..removeWhere(
-              (String key, dynamic value) => prevOptionsMap[key] == value);
+          (String key, dynamic value) => prevOptionsMap[key] == value);
   }
-
 }

@@ -6,15 +6,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fa5a5a82-0897-4f01-abdb-22e890474f63" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/src/main/java/kr/co/lbstech/flutter_naver_map_test/NaverMapListeners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/java/kr/co/lbstech/flutter_naver_map_test/Convert.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/kr/co/lbstech/flutter_naver_map_test/Convert.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/kr/co/lbstech/flutter_naver_map_test/FlutterNaverMapTestPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/kr/co/lbstech/flutter_naver_map_test/FlutterNaverMapTestPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/kr/co/lbstech/flutter_naver_map_test/NaverMapBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/kr/co/lbstech/flutter_naver_map_test/NaverMapBuilder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/src/main/java/kr/co/lbstech/flutter_naver_map_test/NaverMapController.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/kr/co/lbstech/flutter_naver_map_test/NaverMapController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/src/main/java/kr/co/lbstech/flutter_naver_map_test/NaverMapFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/kr/co/lbstech/flutter_naver_map_test/NaverMapFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/kr/co/lbstech/flutter_naver_map_test/NaverMapListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/kr/co/lbstech/flutter_naver_map_test/NaverMapListeners.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/kr/co/lbstech/flutter_naver_map_test/NaverMapOptionSink.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/kr/co/lbstech/flutter_naver_map_test/NaverMapOptionSink.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/callbacks.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/callbacks.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/naver_map.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/naver_map.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/ui.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/ui.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
@@ -28,36 +33,29 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="testRunner" value="GRADLE" />
+    <option name="delegatedBuild" value="true" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="2862d1eb2e017ece" />
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5181237">
+    <splitter split-orientation="horizontal" split-proportion="0.22871348">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/lib/flutter_naver_map_test.dart">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/lib/src/overlay_image.dart">
               <provider selected="true" editor-type-id="text-editor">
-                <state>
-                  <folding>
-                    <element signature="e#29#49#0" expanded="true" />
-                    <element signature="e#173#199#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="494">
+                  <caret line="26" column="5" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/lib/src/controller.dart">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1104">
-                  <caret line="51" column="48" selection-start-line="51" selection-start-column="48" selection-end-line="51" selection-end-column="48" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/lib/src/naver_map.dart">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="459">
-                  <caret line="296" column="3" selection-start-line="296" selection-start-column="3" selection-end-line="296" selection-end-column="3" />
+                <state relative-caret-position="326">
+                  <caret line="55" column="51" selection-start-line="55" selection-start-column="51" selection-end-line="55" selection-end-column="51" />
                 </state>
               </provider>
             </entry>
@@ -65,7 +63,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/lib/src/marker_updates.dart">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="138">
+                <state relative-caret-position="858">
                   <caret line="63" column="68" selection-start-line="63" selection-start-column="68" selection-end-line="63" selection-end-column="68" />
                 </state>
               </provider>
@@ -75,14 +73,11 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/example/lib/main.dart">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="123">
-                  <caret line="102" selection-start-line="102" selection-end-line="102" />
-                  <folding>
-                    <element signature="e#0#39#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="156">
+                  <caret line="59" column="17" selection-start-line="59" selection-start-column="17" selection-end-line="59" selection-end-column="17" />
                 </state>
               </provider>
             </entry>
@@ -90,8 +85,35 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/lib/src/callbacks.dart">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="391">
-                  <caret line="17" column="58" selection-start-line="17" selection-start-column="58" selection-end-line="17" selection-end-column="58" />
+                <state relative-caret-position="171">
+                  <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/lib/src/camera.dart">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="858">
+                  <caret line="98" selection-start-line="98" selection-end-line="98" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/lib/src/location.dart">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-814">
+                  <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/lib/src/naver_map.dart">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="349">
+                  <caret line="217" column="63" selection-start-line="217" selection-start-column="63" selection-end-line="217" selection-end-column="63" />
                 </state>
               </provider>
             </entry>
@@ -119,14 +141,26 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>platformview</find>
+      <find>locationTrackingMode</find>
+      <find>initial</find>
+      <find>initialCameraPosition</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/test/flutter_naver_map_test_test.dart" />
-        <option value="$PROJECT_DIR$/lib/src/ui.dart" />
         <option value="$PROJECT_DIR$/example/test/widget_test.dart" />
         <option value="$PROJECT_DIR$/example/android/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/lib/src/location.dart" />
@@ -138,15 +172,16 @@
         <option value="$PROJECT_DIR$/lib/src/bitmap.dart" />
         <option value="$PROJECT_DIR$/lib/src/overlay_image.dart" />
         <option value="$PROJECT_DIR$/lib/src/callbacks.dart" />
+        <option value="$PROJECT_DIR$/lib/src/controller.dart" />
+        <option value="$PROJECT_DIR$/lib/src/ui.dart" />
         <option value="$PROJECT_DIR$/lib/src/naver_map.dart" />
         <option value="$PROJECT_DIR$/example/lib/main.dart" />
-        <option value="$PROJECT_DIR$/lib/src/controller.dart" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1912" />
-    <option name="y" value="-8" />
+    <option name="x" value="108" />
+    <option name="y" value="58" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
   </component>
@@ -156,15 +191,28 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="flutter_naver_map_test" type="b2602c69:ProjectViewProjectNode" />
               <item name="flutter_naver_map_test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="flutter_naver_map_test" type="b2602c69:ProjectViewProjectNode" />
+              <item name="flutter_naver_map_test" type="462c0819:PsiDirectoryNode" />
+              <item name="android" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="flutter_naver_map_test" type="b2602c69:ProjectViewProjectNode" />
+              <item name="flutter_naver_map_test" type="462c0819:PsiDirectoryNode" />
+              <item name="example" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="flutter_naver_map_test" type="b2602c69:ProjectViewProjectNode" />
+              <item name="flutter_naver_map_test" type="462c0819:PsiDirectoryNode" />
+              <item name="example" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="flutter_naver_map_test" type="b2602c69:ProjectViewProjectNode" />
@@ -185,13 +233,16 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../flutter_pai_rework" />
-    <property name="settings.editor.selected.configurable" value="settings.github" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="dart.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
@@ -234,10 +285,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14232409" />
       <window_info id="Captures" order="1" side_tool="true" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
@@ -247,23 +298,23 @@
       <window_info id="Capture Tool" order="7" />
       <window_info id="Favorites" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Dart Analysis" order="0" weight="0.32936078" />
-      <window_info active="true" anchor="bottom" id="Run" order="1" sideWeight="0.4989339" visible="true" weight="0.27440348" />
+      <window_info anchor="bottom" id="Run" order="1" sideWeight="0.4989339" weight="0.27440348" />
       <window_info anchor="bottom" id="TODO" order="2" weight="0.32936078" />
       <window_info anchor="bottom" id="Android Profiler" order="3" show_stripe_button="false" />
       <window_info anchor="bottom" id="Logcat" order="4" weight="0.69014084" />
-      <window_info anchor="bottom" id="Debug" order="5" weight="0.32936078" />
-      <window_info anchor="bottom" id="Terminal" order="6" weight="0.32936078" />
+      <window_info active="true" anchor="bottom" id="Debug" order="5" visible="true" weight="0.09219089" />
+      <window_info anchor="bottom" id="Terminal" order="6" weight="0.3286334" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5010661" side_tool="true" weight="0.27440348" />
       <window_info anchor="bottom" id="Flutter Performance" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Find" order="10" />
-      <window_info anchor="bottom" id="Messages" order="11" weight="0.32936078" />
+      <window_info anchor="bottom" id="Find" order="10" weight="0.07809111" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.3286334" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="1" />
       <window_info anchor="right" id="Theme Preview" order="2" />
-      <window_info anchor="right" id="Flutter Inspector" order="3" />
-      <window_info anchor="right" id="Flutter Outline" order="4" />
-      <window_info anchor="right" id="Palette&#9;" order="5" />
+      <window_info anchor="right" id="Flutter Outline" order="3" />
+      <window_info anchor="right" id="Palette&#9;" order="4" />
+      <window_info anchor="right" id="Flutter Inspector" order="5" weight="0.32995737" />
     </layout>
   </component>
   <component name="editorHistoryManager">
@@ -291,48 +342,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Developer/flutter/packages/flutter/lib/src/gestures/converter.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="275" column="19" selection-start-line="275" selection-start-column="19" selection-end-line="275" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/src/camera.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2254">
-          <caret line="98" selection-start-line="98" selection-end-line="98" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/src/ui.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1104">
-          <caret line="48" column="22" selection-start-line="48" selection-start-column="22" selection-end-line="48" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/src/location.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="920">
-          <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://C:/Developer/flutter/packages/flutter/lib/src/gestures/converter.dart" />
     <entry file="file://$PROJECT_DIR$/example/pubspec.yaml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/flutter_naver_map_test.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#29#49#0" expanded="true" />
-            <element signature="e#173#199#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -343,10 +357,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/src/overlay_image.dart">
+    <entry file="file://$PROJECT_DIR$/lib/src/callbacks.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
+        <state relative-caret-position="171">
+          <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/src/camera.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="858">
+          <caret line="98" selection-start-line="98" selection-end-line="98" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/src/marker_updates.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="858">
+          <caret line="63" column="68" selection-start-line="63" selection-start-column="68" selection-end-line="63" selection-end-column="68" />
         </state>
       </provider>
     </entry>
@@ -360,41 +388,65 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/src/marker_updates.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="63" column="68" selection-start-line="63" selection-start-column="68" selection-end-line="63" selection-end-column="68" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/android/settings.gradle">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/src/callbacks.dart">
+    <entry file="file://$USER_HOME$/flutter/packages/flutter/lib/src/widgets/platform_view.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="17" column="58" selection-start-line="17" selection-start-column="58" selection-end-line="17" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/src/naver_map.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="296" column="3" selection-start-line="296" selection-start-column="3" selection-end-line="296" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/example/lib/main.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="102" selection-start-line="102" selection-end-line="102" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="159">
+          <caret line="89" column="18" lean-forward="true" selection-start-line="89" selection-start-column="18" selection-end-line="89" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/src/controller.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1104">
-          <caret line="51" column="48" selection-start-line="51" selection-start-column="48" selection-end-line="51" selection-end-column="48" />
+        <state relative-caret-position="326">
+          <caret line="55" column="51" selection-start-line="55" selection-start-column="51" selection-end-line="55" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/src/ui.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="335">
+          <caret line="60" column="12" lean-forward="true" selection-start-line="60" selection-start-column="12" selection-end-line="60" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/flutter_naver_map_test.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="15" column="26" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
+          <folding>
+            <element signature="e#29#49#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/src/location.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-814">
+          <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/lib/main.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="59" column="17" selection-start-line="59" selection-start-column="17" selection-end-line="59" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/src/overlay_image.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="494">
+          <caret line="26" column="5" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/src/naver_map.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="349">
+          <caret line="217" column="63" selection-start-line="217" selection-start-column="63" selection-end-line="217" selection-end-column="63" />
         </state>
       </provider>
     </entry>

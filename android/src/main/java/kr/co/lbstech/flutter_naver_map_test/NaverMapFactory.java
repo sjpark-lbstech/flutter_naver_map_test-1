@@ -2,6 +2,8 @@ package kr.co.lbstech.flutter_naver_map_test;
 
 import android.content.Context;
 
+import com.naver.maps.map.LocationTrackingMode;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -15,7 +17,7 @@ public class NaverMapFactory extends PlatformViewFactory {
     private final PluginRegistry.Registrar pluginRegistrar;
     private final AtomicInteger activityState;
 
-    public NaverMapFactory(AtomicInteger state, PluginRegistry.Registrar registrar) {
+    NaverMapFactory(AtomicInteger state, PluginRegistry.Registrar registrar) {
         super(StandardMessageCodec.INSTANCE);
         pluginRegistrar = registrar;
         activityState = state;
@@ -27,20 +29,23 @@ public class NaverMapFactory extends PlatformViewFactory {
         Map<String, Object> params = (Map<String, Object>) args;
         NaverMapBuilder builder = new NaverMapBuilder();
 
-        if(params.containsKey("initialCameraPosition")) {
+        if (params.containsKey("initialCameraPosition")) {
             Map<String, Object> initPosition = (Map<String, Object>) params.get("initialCameraPosition");
             builder.setInitialCameraPosition(initPosition);
         }
-        if(params.containsKey("options")){
+        if (params.containsKey("options")) {
             Map<String, Object> options = (Map<String, Object>) params.get("options");
-            if(options.containsKey("isDevMode")){
+            if (options.containsKey("isDevMode")) {
                 boolean isDevMode = (boolean) options.get("isDevMode");
                 builder.setDevMode(isDevMode);
             }
             Convert.carveMapOptions(builder, options);
         }
-        if(params.containsKey("markersToAdd")){
+        if (params.containsKey("markersToAdd")) {
             builder.setInitialMarkers((List) params.get("markersToAdd"));
+        }
+        if (params.containsKey("locationTrackingMode")) {
+            builder.setInitialTrackingMode(LocationTrackingMode.values()[(int) params.get("locationTrackingMode")]);
         }
 
         return builder.build(i, context, activityState, pluginRegistrar);

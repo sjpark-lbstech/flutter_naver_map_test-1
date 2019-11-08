@@ -3,7 +3,7 @@ part of flutter_naver_map;
 /// 지도의 유형을 지정하는 enum.
 /// 네이버 SDK가 지원하는 지도 유형은 5가지 입니다. [MapType.Basic], [MapType.Navi],
 /// [MapType.Satellite], [MapType.Hybrid], [MapType.Terrain]
-enum MapType{
+enum MapType {
   /// 일반 지도입니다. 하천, 녹지, 도로, 심벌 등 다양한 정보를 노출합니다.
   Basic,
 
@@ -38,7 +38,7 @@ enum MapType{
 /// 등산로 - BASIC, SATELLITE, HYBRID, TERRAIN
 ///
 /// 지적편집도 - BASIC, SATELLITE, HYBRID, TERRAIN
-enum MapLayer{
+enum MapLayer {
   /// 건물 그룹입니다. 활성화할 경우 건물 형상, 주소 심벌 등 건물과 관련된 요소가 노출됩니다. 기본적으로 활성화됩니다.
   LAYER_GROUP_BUILDING,
 
@@ -56,4 +56,24 @@ enum MapLayer{
 
   /// 지적편집도 그룹입니다. 활성화할 경우 지적편집도가 노출됩니다.
   LAYER_GROUP_CADASTRAL,
+}
+
+/// 위치 추적 모드
+enum LocationTrackingMode {
+  /// 위치를 추적하지 않습니다.
+  none,
+
+  /// 위치 추적이 활성화되고, 현위치 오버레이가 사용자의 위치를 따라 움직입니다.
+  /// 그러나 지도는 움직이지 않습니다.
+  noFollow,
+
+  /// 위치 추적이 활성화되고, 현위치 오버레이와 카메라의 좌표가 사용자의
+  /// 위치를 따라 움직입니다. API나 제스처를 사용해 임의로 카메라를 움직일 경우
+  /// 모드가 [noFollow]로 바뀝니다.
+  follow,
+
+  /// 위치 추적이 활성화되고, 현위치 오버레이, 카메라의 좌표, 베어링이 사용자의
+  /// 위치 및 방향을 따라 움직입니다. API나 제스처를 사용해 임의로 카메라를
+  /// 움직일 경우 모드가 [noFollow]로 바뀝니다.
+  face,
 }
