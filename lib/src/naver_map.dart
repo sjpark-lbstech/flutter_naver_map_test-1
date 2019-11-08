@@ -26,7 +26,7 @@ class NaverMap extends StatefulWidget {
     this.locationButtonEnable = false,
     this.isDevMode = true,
     this.locationTrackingMode = LocationTrackingMode.none,
-    this.markers,
+    this.markers = const [],
   }) : super(key: key);
 
   /// 지도가 완전히 만들어진 후에 컨트롤러를 파라미터로 가지는 콜백.
