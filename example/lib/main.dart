@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_naver_map_test/flutter_naver_map_test.dart';
 
-void main() => runApp(MaterialApp(home: TestMain(),));
+void main() => runApp(MaterialApp(
+      home: TestMain(),
+    ));
 
 class TestMain extends StatefulWidget {
   @override
@@ -14,24 +15,26 @@ class TestMain extends StatefulWidget {
 class _TestMainState extends State<TestMain> {
   Completer<NaverMapController> _controller = Completer<NaverMapController>();
   bool _toggle = false;
-  
+
   OverlayImage _icon;
 
   @override
   Widget build(BuildContext context) {
-    if(_icon == null){
+    if (_icon == null) {
       ImageConfiguration config = createLocalImageConfiguration(context);
-      OverlayImage.fromAssetImage(config, 'assets/icon.png')
-          .then((icon){
-            setState(() {
-              _icon = icon;
-            });
+      OverlayImage.fromAssetImage(config, 'assets/icon.png').then((icon) {
+        setState(() {
+          _icon = icon;
+        });
       });
     }
-    
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('네이버 맵 테스트', style: TextStyle(color: Colors.black87),),
+        title: Text(
+          '네이버 맵 테스트',
+          style: TextStyle(color: Colors.black87),
+        ),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
@@ -40,8 +43,14 @@ class _TestMainState extends State<TestMain> {
         onPressed: _clickFab,
         backgroundColor: Colors.indigo,
         child: _toggle
-            ? Icon(Icons.check, color: Colors.white,)
-            : Icon(Icons.cancel, color: Colors.white,),
+            ? Icon(
+                Icons.check,
+                color: Colors.white,
+              )
+            : Icon(
+                Icons.cancel,
+                color: Colors.white,
+              ),
       ),
     );
   }
@@ -58,9 +67,7 @@ class _TestMainState extends State<TestMain> {
         onMapDoubleTab: _onMapDoubleTab,
         onMapTwoFingerTab: _onMapTwoFingerTab,
         onSymbolTab: _onSymbolTab,
-        mapType: _toggle
-            ? MapType.Navi
-            : MapType.Basic,
+        mapType: _toggle ? MapType.Navi : MapType.Basic,
         indoorEnable: false,
         activeLayers: [MapLayer.LAYER_GROUP_BUILDING],
         nightModeEnable: true,
@@ -77,6 +84,7 @@ class _TestMainState extends State<TestMain> {
             onMarkerTab: _onMarkerTab,
           ),
         ],
+        locationTrackingMode: LocationTrackingMode.face,
       ),
     );
   }
@@ -85,13 +93,11 @@ class _TestMainState extends State<TestMain> {
     _controller.complete(controller);
   }
 
-  void _clickFab() async{
+  void _clickFab() async {
     NaverMapController controller = await _controller.future;
 
     controller.moveCamera(CameraUpdate.scrollTo(LatLng(37.565156, 126.973580)));
-
   }
-
 
   void _onMarkerTab(Marker marker) {
     print(marker.markerId);

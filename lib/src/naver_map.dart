@@ -3,6 +3,7 @@ part of flutter_naver_map;
 class NaverMap extends StatefulWidget {
   const NaverMap({
     Key key,
+    @required this.initialCameraPosition,
     this.onMapCreated,
     this.onMapTab,
     this.onMapLongTab,
@@ -10,7 +11,6 @@ class NaverMap extends StatefulWidget {
     this.onMapTwoFingerTab,
     this.onSymbolTab,
     this.originalBehaviorDisable = false,
-    this.initialCameraPosition,
     this.mapType = MapType.Basic,
     this.liteModeEnable = false,
     this.nightModeEnable = false,
@@ -212,9 +212,9 @@ class _NaverMapState extends State<NaverMap> {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> createParams = <String, dynamic>{
-      'initialCameraPosition': widget.initialCameraPosition?.toMap(),
+      'initialCameraPosition': widget.initialCameraPosition.toMap(),
       'options': _naverMapOptions.toMap(),
-      'markersToAdd': _serializeMarkerSet(widget.markers),
+      'markersToAdd': _serializeMarkerSet(widget.markers) ?? [],
       'locationTrackingMode': widget.locationTrackingMode.index,
     };
 
