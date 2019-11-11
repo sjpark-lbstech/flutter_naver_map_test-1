@@ -30,7 +30,7 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
         disable 'InvalidPackage'
@@ -39,5 +39,6 @@ android {
     dependencies {
         // 네이버 지도 SDK
         implementation 'com.naver.maps:map-sdk:3.6.0'
+        implementation 'com.google.android.gms:play-services-location:16.0.0'
     }
 }

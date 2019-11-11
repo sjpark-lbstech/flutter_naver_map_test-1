@@ -47,6 +47,8 @@ public class Convert {
             sink.setLocationButtonEnable((Boolean) options.get("locationButtonEnable"));
         if(options.containsKey("originalBehaviorDisable"))
             NaverMapListeners.setOriginalBehaviorDisable((Boolean) options.get("originalBehaviorDisable"));
+        if(options.containsKey("initLocationTrackingEnable"))
+            sink.setLocationTrackingMode((Integer) options.get("initLocationTrackingEnable"));
     }
 
     @SuppressWarnings("unchecked")

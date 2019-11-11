@@ -55,6 +55,13 @@ class NaverMapController{
         LatLng position = LatLng._fromJson(call.arguments['position']);
         String caption = call.arguments['caption'];
         _naverMapState._symbolTab(position, caption);
+        break;
+      case 'camera#move' :
+        _naverMapState._cameraMove();
+        break;
+      case 'camera#idle':
+        _naverMapState._cameraIdle();
+        break;
     }
   }
 

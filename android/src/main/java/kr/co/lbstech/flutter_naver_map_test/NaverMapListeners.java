@@ -1,7 +1,9 @@
 package kr.co.lbstech.flutter_naver_map_test;
 
 import android.graphics.PointF;
-import android.support.annotation.NonNull;
+import android.location.Location;
+
+import androidx.annotation.NonNull;
 
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.NaverMap;
@@ -17,7 +19,9 @@ public class NaverMapListeners implements
         NaverMap.OnMapLongClickListener,
         NaverMap.OnMapDoubleTapListener,
         NaverMap.OnMapTwoFingerTapListener,
-        NaverMap.OnSymbolClickListener {
+        NaverMap.OnSymbolClickListener,
+        NaverMap.OnCameraChangeListener,
+        NaverMap.OnCameraIdleListener {
 
     // member variable
     private final MethodChannel channel;
@@ -69,5 +73,16 @@ public class NaverMapListeners implements
         arguments.put("caption", symbol.getCaption());
         channel.invokeMethod("map#onSymbolClick", arguments);
         return false;
+    }
+
+
+    @Override
+    public void onCameraChange(int i, boolean b) {
+        channel.invokeMethod("camera#move", null);
+    }
+
+    @Override
+    public void onCameraIdle() {
+        channel.invokeMethod("camera#idle", null);
     }
 }

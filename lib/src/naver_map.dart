@@ -11,6 +11,8 @@ class NaverMap extends StatefulWidget {
     this.onMapDoubleTab,
     this.onMapTwoFingerTab,
     this.onSymbolTab,
+    this.onCameraMove,
+    this.onCameraIdle,
     this.originalBehaviorDisable = false,
     this.initialCameraPosition,
     this.mapType = MapType.Basic,
@@ -27,6 +29,7 @@ class NaverMap extends StatefulWidget {
     this.zoomGestureEnable = true,
     this.locationButtonEnable = false,
     this.isDevMode = true,
+    this.initLocationTrackingMode = LocationTrackingMode.NoFollow,
     this.markers,
   }) : super(key : key);
 
@@ -45,6 +48,12 @@ class NaverMap extends StatefulWidget {
   ///
   /// 사용자가 선택한 지점의 [LatLng]을 파라미터로 가진다.
   final OnMapLongTab onMapLongTab;
+
+  /// 카메라가 움직일때 호출되는 콜백
+  final VoidCallback onCameraMove;
+
+  /// 카메라의 움직임이 완료되었을때 호출되는 콜백
+  final VoidCallback onCameraIdle;
 
   /// 카메라의 최초 포지션.
   final CameraPosition initialCameraPosition;
@@ -173,6 +182,11 @@ class NaverMap extends StatefulWidget {
   /// 기본값은 false 입니다.
   final bool originalBehaviorDisable;
 
+  /// 최초 지도 생성시에 위치추적모드를 선택할 수 있습니다.
+  ///
+  /// 기본값은 [LocationTrackingMode.NoFollow] 입니다.
+  final LocationTrackingMode initLocationTrackingMode;
+
   /// 지도가 두 손가락으로 탭 되었을때 호출되는 콜백 메서드.
   final OnMapTwoFingerTab onMapTwoFingerTab;
 
@@ -296,6 +310,16 @@ class _NaverMapState extends State<NaverMap> {
       widget.onSymbolTab(position, caption);
   }
 
+  void _cameraMove(){
+    if(widget.onCameraMove != null)
+      widget.onCameraMove();
+  }
+
+  void _cameraIdle(){
+    if(widget.onCameraIdle != null)
+      widget.onCameraIdle();
+  }
+
 }
 
 
@@ -316,6 +340,7 @@ class _NaverMapOptions {
     this.rotationGestureEnable,
     this.isDevMode,
     this.originalBehaviorDisable,
+    this.initLocationTrackingMode,
   });
 
   static _NaverMapOptions fromWidget(NaverMap map) {
@@ -335,6 +360,7 @@ class _NaverMapOptions {
       zoomGestureEnable: map.zoomGestureEnable,
       isDevMode: map.isDevMode,
       originalBehaviorDisable: map.originalBehaviorDisable,
+      initLocationTrackingMode: map.initLocationTrackingMode,
     );
   }
 
@@ -346,7 +372,6 @@ class _NaverMapOptions {
   final double buildingHeight;
   final double symbolScale;
   final double symbolPerspectiveRatio;
-
   final bool rotationGestureEnable;
   final bool scrollGestureEnable;
   final bool tiltGestureEnable;
@@ -354,6 +379,7 @@ class _NaverMapOptions {
   final bool locationButtonEnable;
   final bool isDevMode;
   final bool originalBehaviorDisable;
+  final LocationTrackingMode initLocationTrackingMode;
 
   Map<String, dynamic> toMap(){
     final Map<String, dynamic> optionsMap = <String, dynamic>{};
@@ -382,6 +408,7 @@ class _NaverMapOptions {
     addIfNonNull('locationButtonEnable', locationButtonEnable);
     addIfNonNull('isDevMode', isDevMode);
     addIfNonNull('originalBehaviorDisable', originalBehaviorDisable);
+    addIfNonNull('initLocationTrackingEnable', initLocationTrackingMode?.index);
     return optionsMap;
   }
 

@@ -10,24 +10,23 @@ import static kr.co.lbstech.flutter_naver_map_test.FlutterNaverMapTestPlugin.DES
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.graphics.PointF;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
+import androidx.annotation.NonNull;
 
-import com.naver.maps.geometry.LatLng;
+import android.view.View;
+
 import com.naver.maps.geometry.LatLngBounds;
+import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.CameraUpdate;
+import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.NaverMapOptions;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
+import com.naver.maps.map.util.FusedLocationSource;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +59,7 @@ public class NaverMapController implements
     private List initialMarkers;
     private HashMap<String, Object> markers = new HashMap<>();
     private NaverMapListeners listeners;
+    private int locationTrackingMode;
 
     NaverMapController(
             int id,
@@ -93,6 +93,10 @@ public class NaverMapController implements
         naverMap.setOnMapDoubleTapListener(listeners);
         naverMap.setOnMapTwoFingerTapListener(listeners);
         naverMap.setOnSymbolClickListener(listeners);
+        naverMap.addOnCameraChangeListener(listeners);
+        naverMap.addOnCameraIdleListener(listeners);
+        naverMap.setLocationSource(new FusedLocationSource(registrar.activity(), 0xAAFF));
+        setLocationTrackingMode(locationTrackingMode);
     }
 
     @Override
@@ -148,7 +152,7 @@ public class NaverMapController implements
     }
 
     @Override
-    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+    public void onMethodCall(@NonNull MethodCall methodCall,@NonNull MethodChannel.Result result) {
         switch (methodCall.method){
             case "map#waitFoeMap":
                 {
@@ -189,6 +193,7 @@ public class NaverMapController implements
                 {
                     if (naverMap != null) {
                         CameraUpdate update = Convert.toCameraUpdate(methodCall.argument("cameraUpdate"));
+                        update.animate(CameraAnimation.Easing);
                         naverMap.moveCamera(update);
                         result.success(null);
                     } else result.error("네이버맵 초기화 안됨.",
@@ -378,15 +383,47 @@ public class NaverMapController implements
     }
 
     @Override
-    public void setRotationGestureEnable(boolean rotationGestureEnable) {}
+    public void setRotationGestureEnable(boolean rotationGestureEnable) {
+        naverMap.getUiSettings().setRotateGesturesEnabled(rotationGestureEnable);
+    }
     @Override
-    public void setScrollGestureEnable(boolean scrollGestureEnable) {}
+    public void setScrollGestureEnable(boolean scrollGestureEnable) {
+        naverMap.getUiSettings().setScrollGesturesEnabled(scrollGestureEnable);
+    }
     @Override
-    public void setTiltGestureEnable(boolean tiltGestureEnable) {}
+    public void setTiltGestureEnable(boolean tiltGestureEnable) {
+        naverMap.getUiSettings().setTiltGesturesEnabled(tiltGestureEnable);
+    }
     @Override
-    public void setZoomGestureEnable(boolean zoomGestureEnable) {}
+    public void setZoomGestureEnable(boolean zoomGestureEnable) {
+        naverMap.getUiSettings().setZoomControlEnabled(zoomGestureEnable);
+    }
     @Override
-    public void setLocationButtonEnable(boolean locationButtonEnable) {}
+    public void setLocationButtonEnable(boolean locationButtonEnable) {
+        naverMap.getUiSettings().setLocationButtonEnabled(locationButtonEnable);
+    }
+
+    @Override
+    public void setLocationTrackingMode(int locationTrackingMode) {
+        if(naverMap == null) {
+            this.locationTrackingMode = locationTrackingMode;
+            return;
+        }
+        switch (locationTrackingMode){
+            case 0:
+                naverMap.setLocationTrackingMode(LocationTrackingMode.None);
+                break;
+            case 1:
+                naverMap.setLocationTrackingMode(LocationTrackingMode.NoFollow);
+                break;
+            case 2:
+                naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+                break;
+            case 3:
+                naverMap.setLocationTrackingMode(LocationTrackingMode.Face);
+                break;
+        }
+    }
 
     @Override
     public boolean onClick(@NonNull Overlay overlay) {

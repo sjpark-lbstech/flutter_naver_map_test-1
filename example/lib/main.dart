@@ -58,12 +58,15 @@ class _TestMainState extends State<TestMain> {
         onMapDoubleTab: _onMapDoubleTab,
         onMapTwoFingerTab: _onMapTwoFingerTab,
         onSymbolTab: _onSymbolTab,
+        onCameraMove: _onCameraMove,
+        onCameraIdle: _onCameraIdle,
         mapType: _toggle
             ? MapType.Navi
             : MapType.Basic,
         indoorEnable: false,
         activeLayers: [MapLayer.LAYER_GROUP_BUILDING],
         nightModeEnable: true,
+        initLocationTrackingMode: LocationTrackingMode.Follow,
         markers: [
           Marker(
             markerId: 'test_no.1',
@@ -115,5 +118,13 @@ class _TestMainState extends State<TestMain> {
 
   void _onSymbolTab(LatLng position, String caption) {
     print('symbol Tab - LatLng : $position, caption : $caption');
+  }
+
+  void _onCameraMove() {
+    print('camera move!');
+  }
+
+  void _onCameraIdle(){
+    print('camera stop!');
   }
 }
