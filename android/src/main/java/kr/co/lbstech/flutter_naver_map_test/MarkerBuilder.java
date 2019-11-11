@@ -2,6 +2,7 @@ package kr.co.lbstech.flutter_naver_map_test;
 
 import com.naver.maps.map.overlay.Marker;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class MarkerBuilder {
@@ -16,9 +17,14 @@ public class MarkerBuilder {
             throw new AssertionError();
 
         Marker marker = new Marker();
-        String markerId = (String) data.get("markerId");
-        Boolean consumTabEvent = (Boolean) data.get("consumeTapEvents");
-        marker.setTag(new Object[]{markerId, consumTabEvent});
+        HashMap<String, Object> tags = new HashMap<>();
+        tags.put("markerId", data.get("markerId"));
+        tags.put("consumeTapEvents", data.get("consumeTapEvents"));
+        if(data.containsKey("infoWindow")){
+            tags.put("infoWindow", data.get("infoWindow"));
+        }
+        marker.setTag(tags);
+
         marker.setPosition(Convert.toLatLng(data.get("position")));
 
         if(data.containsKey("alpha"))
@@ -76,16 +82,27 @@ public class MarkerBuilder {
         return marker;
     }
 
+    @SuppressWarnings("unchecked")
     static String getMarkerId(Marker marker){
-        Object[] tags = (Object[]) marker.getTag();
-        if(tags == null || tags.length < 2) throw new AssertionError();
-        return (String) tags[0];
+        Map<String, Object> tags = (Map<String, Object>) marker.getTag();
+        if(tags == null || !tags.containsKey("markerId")) throw new AssertionError();
+        return (String) tags.get("markerId");
     }
 
+    @SuppressWarnings("unchecked")
     static boolean getConsumeTabEvent(Marker marker){
-        Object[] tags = (Object[]) marker.getTag();
-        if(tags == null || tags.length < 2) throw new AssertionError();
-        return (boolean) tags[1];
+        Map<String, Object> tags = (Map<String, Object>) marker.getTag();
+        if(tags == null || !tags.containsKey("consumeTapEvents"))
+            throw new AssertionError();
+        return (boolean) tags.get("consumeTapEvents");
+    }
+
+    @SuppressWarnings("unchecked")
+    static String getInfoWindow(Marker marker){
+        Map<String, Object> tags = (Map<String, Object>) marker.getTag();
+        if(tags == null || !tags.containsKey("infoWindow"))
+            return null;
+        return (String) tags.get("infoWindow");
     }
 
 }

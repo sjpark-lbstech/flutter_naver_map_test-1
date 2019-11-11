@@ -8,6 +8,10 @@ class Marker{
   /// 또한 마커들의 클릭이벤트에서 여러 마커들을 구분하는데에 사용됩니다.
   final String markerId;
 
+  /// 마커를 클릭했을 때 인포윈도우를 보이게 할 수 있습니다.
+  /// null 일 경우 마커를 클릭해도 윈도우가 보이지 않습니다.
+  final String infoWindow;
+
   /// 마커의 불투명도를 조절하는 값입니다.
   /// 유효한 값의 범위는 0.0 ~ 1.0 까지이며 1.0일떄 완전 붏투명입니다.
   final double alpha;
@@ -176,6 +180,7 @@ class Marker{
   Marker({
     @required this.markerId,
     @required this.position,
+    this.infoWindow,
     this.alpha,
     this.flat,
     this.visible,
@@ -238,7 +243,6 @@ class Marker{
     addIfPresent('captionOffset', captionOffset);
     addIfPresent('captionPerspectiveEnabled', captionPerspectiveEnabled);
     addIfPresent('zIndex', zIndex);
-    addIfPresent('onMarkerTab', true);
     addIfPresent('globalZIndex', globalZIndex);
     addIfPresent('iconTintColor', iconTintColor?.value);
     addIfPresent('subCaptionText', subCaptionText);
@@ -247,6 +251,7 @@ class Marker{
     addIfPresent('subCaptionHaloColor', subCaptionHaloColor?.value);
     addIfPresent('subCaptionRequestedWidth', subCaptionRequestedWidth);
     addIfPresent('icon', icon?._toJson());
+    addIfPresent('infoWindow', infoWindow);
 
     return json;
   }
@@ -277,6 +282,7 @@ class Marker{
         iconTintColor == typedOther.iconTintColor &&
         subCaptionText == typedOther.subCaptionText &&
         subCaptionTextSize == typedOther.subCaptionTextSize &&
+        infoWindow == typedOther.infoWindow &&
         onMarkerTab == typedOther.onMarkerTab;
   }
 
@@ -316,6 +322,7 @@ class Marker{
       visible: visible,
       zIndex: zIndex,
       icon: icon,
+      infoWindow: infoWindow,
     );
   }
 
@@ -324,7 +331,7 @@ class Marker{
     return 'Marker{markerId: $markerId, alpha: $alpha, '
         'consumeTapEvents: $consumeTapEvents, flat: $flat, '
         'position: $position, visible: $visible, zIndex: $zIndex, '
-        'onMarkerTab: $onMarkerTab}';
+        'onMarkerTab: $onMarkerTab, infowindow : $infoWindow}';
   }
 }
 

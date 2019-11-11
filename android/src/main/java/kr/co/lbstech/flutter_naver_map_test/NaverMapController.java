@@ -44,8 +44,7 @@ public class NaverMapController implements
         OnMapReadyCallback,
         MethodChannel.MethodCallHandler,
         Application.ActivityLifecycleCallbacks,
-        NaverMapOptionSink,
-        Overlay.OnClickListener {
+        NaverMapOptionSink{
 
     int id;
     private final AtomicInteger activityState;
@@ -58,7 +57,7 @@ public class NaverMapController implements
     private MethodChannel.Result mapReadyResult;
     private List initialMarkers;
     private HashMap<String, Object> markers = new HashMap<>();
-    private NaverMapListeners listeners;
+    private Listeners listeners;
     private int locationTrackingMode;
 
     NaverMapController(
@@ -75,7 +74,7 @@ public class NaverMapController implements
         registrarActivityHashCode = registrar.activity().hashCode();
         methodChannel = new MethodChannel(registrar.messenger(), "flutter_naver_map_test_"+ id);
         methodChannel.setMethodCallHandler(this);
-        listeners = new NaverMapListeners(methodChannel);
+        listeners = new Listeners(methodChannel, context);
         this.initialMarkers = initialMarkers;
     }
 
@@ -207,8 +206,7 @@ public class NaverMapController implements
                     for (Object data : markersToAdd) {
                         Map<String, Object> markerData = (Map<String, Object>) data;
                         Marker marker = MarkerBuilder.build(markerData);
-                        if(markerData.containsKey("onMarkerTab"))
-                            marker.setOnClickListener(this);
+                        marker.setOnClickListener(listeners);
                         markers.put(MarkerBuilder.getMarkerId(marker), marker);
                         marker.setMap(naverMap);
                     }
@@ -220,8 +218,7 @@ public class NaverMapController implements
                         if (markers.containsKey(markerId)) {
                             Marker previousMarker = (Marker) markers.get(markerId);
                             previousMarker.setMap(null);
-                            if(markerData.containsKey("onMarkerTab"))
-                                currentMarker.setOnClickListener(this);
+                            currentMarker.setOnClickListener(listeners);
                             currentMarker.setMap(naverMap);
                             markers.put(markerId, currentMarker);
                         }
@@ -425,24 +422,13 @@ public class NaverMapController implements
         }
     }
 
-    @Override
-    public boolean onClick(@NonNull Overlay overlay) {
-        if(overlay instanceof Marker){
-            String markerId = MarkerBuilder.getMarkerId((Marker) overlay);
-            methodChannel.invokeMethod("marker#onTap", markerId);
-            return MarkerBuilder.getConsumeTabEvent((Marker) overlay);
-        }
-        return false;
-    }
-
     @SuppressWarnings("unchecked")
     private void setInitialMarkers() {
         if(naverMap != null){
             for(Object data : initialMarkers){
                 Map<String, Object> markerJson = (Map<String, Object>) data;
                 Marker marker = MarkerBuilder.build(markerJson);
-                if(markerJson.containsKey("onMarkerTab"))
-                    marker.setOnClickListener(this);
+                marker.setOnClickListener(listeners);
                 String markerId = (String) markerJson.get("markerId");
                 markers.put(markerId, marker);
             }
