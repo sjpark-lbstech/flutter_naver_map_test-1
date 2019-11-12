@@ -266,8 +266,8 @@ class _NaverMapState extends State<NaverMap> {
   void _updateMarkers() async{
     final NaverMapController controller = await _controller.future;
     controller._updateMarkers(_MarkerUpdates.from(
-      _markers.values.toSet(),
-      widget.markers.toSet(),
+      _markers.values?.toSet(),
+      widget.markers?.toSet(),
     ));
     _markers = _keyByMarkerId(widget.markers);
   }

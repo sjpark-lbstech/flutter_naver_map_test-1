@@ -49,9 +49,6 @@ class _TestMainState extends State<TestMain> {
   _body() {
     return Container(
       child: NaverMap(
-        initialCameraPosition: CameraPosition(
-          target: LatLng(37.476943, 126.963677),
-        ),
         onMapCreated: _onMapCreated,
         onMapTab: _onMapTab,
         onMapLongTab: _onMapLongTab,
@@ -60,28 +57,7 @@ class _TestMainState extends State<TestMain> {
         onSymbolTab: _onSymbolTab,
         onCameraMove: _onCameraMove,
         onCameraIdle: _onCameraIdle,
-        mapType: _toggle
-            ? MapType.Navi
-            : MapType.Basic,
-        indoorEnable: false,
-        activeLayers: [MapLayer.LAYER_GROUP_BUILDING],
-        nightModeEnable: true,
         initLocationTrackingMode: LocationTrackingMode.Follow,
-        markers: [
-          Marker(
-            markerId: 'test_no.1',
-            position: LatLng(37.476943, 126.963677),
-            onMarkerTab: _onMarkerTab,
-            infoWindow: '정보창 테스트1',
-            icon: _icon,
-          ),
-          Marker(
-            markerId: 'test_no.2',
-            position: LatLng(37.476943, 126.963777),
-            onMarkerTab: _onMarkerTab,
-            infoWindow: '정보창 테스트2',
-          ),
-        ],
       ),
     );
   }
