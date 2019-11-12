@@ -424,7 +424,7 @@ public class NaverMapController implements
 
     @SuppressWarnings("unchecked")
     private void setInitialMarkers() {
-        if(naverMap != null){
+        if(naverMap != null && initialMarkers != null){
             for(Object data : initialMarkers){
                 Map<String, Object> markerJson = (Map<String, Object>) data;
                 Marker marker = MarkerBuilder.build(markerJson);
