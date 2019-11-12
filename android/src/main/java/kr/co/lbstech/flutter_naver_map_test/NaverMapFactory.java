@@ -29,7 +29,7 @@ public class NaverMapFactory extends PlatformViewFactory {
 
         if(params.containsKey("initialCameraPosition")) {
             Map<String, Object> initPosition = (Map<String, Object>) params.get("initialCameraPosition");
-            builder.setInitialCameraPosition(initPosition);
+            if(initPosition != null) builder.setInitialCameraPosition(initPosition);
         }
         if(params.containsKey("options")){
             Map<String, Object> options = (Map<String, Object>) params.get("options");
