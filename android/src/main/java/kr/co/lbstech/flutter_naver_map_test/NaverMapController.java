@@ -151,6 +151,7 @@ public class NaverMapController implements
         registrar.activity().getApplication().unregisterActivityLifecycleCallbacks(this);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void onMethodCall(@NonNull MethodCall methodCall,@NonNull MethodChannel.Result result) {
         switch (methodCall.method){
@@ -233,8 +234,33 @@ public class NaverMapController implements
                             markers.remove(markerId);
                         }
                     }
+                    result.success(null);
                 }
                 break;
+            case "tracking#mode":
+            {
+                if(naverMap != null){
+                    int mode = methodCall.argument("locationTrackingMode");
+                    switch (mode){
+                        case 0:
+                            naverMap.setLocationTrackingMode(LocationTrackingMode.None);
+                            break;
+                        case 1:
+                            naverMap.setLocationTrackingMode(LocationTrackingMode.NoFollow);
+                            break;
+                        case 2:
+                            naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+                            break;
+                        default:
+                            naverMap.setLocationTrackingMode(LocationTrackingMode.Face);
+                            break;
+                    }
+                    result.success(null);
+                } else result.error("네이버맵 초기화 안됨.",
+                        "네이버 지도가 생성되기 전에 이 메서드를 사용할 수 없습니다.",
+                        null);
+            }
+            break;
         }
     }
 

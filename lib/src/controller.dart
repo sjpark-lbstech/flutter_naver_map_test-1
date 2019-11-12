@@ -112,4 +112,11 @@ class NaverMapController{
     });
   }
 
+  Future<void> setLocationTrackingMode(LocationTrackingMode mode) async{
+    if(mode == null) return;
+    await channel.invokeMethod('tracking#mode', <String, dynamic>{
+      'locationTrackingMode' : mode.index,
+    });
+  }
+
 }
