@@ -34,11 +34,13 @@ public class Listeners implements
     private static boolean originalBehaviorDisable = false;
     private InfoWindow window;
     private boolean isMarkerTab = false;
+    private NaverMap naverMap;
 
 
-    Listeners(MethodChannel channel, Context context){
+    Listeners(MethodChannel channel, Context context, NaverMap naverMap){
         this.channel = channel;
         this.context = context;
+        this.naverMap = naverMap;
         window = new InfoWindow();
     }
 
@@ -93,7 +95,10 @@ public class Listeners implements
 
     @Override
     public void onCameraChange(int i, boolean b) {
-        channel.invokeMethod("camera#move", null);
+        final Map<String, Object> arguments = new HashMap<>(2);
+        LatLng latLng = naverMap.getCameraPosition().target;
+        arguments.put("position", Convert.latLngToJson(latLng));
+        channel.invokeMethod("camera#move", arguments);
     }
 
     @Override

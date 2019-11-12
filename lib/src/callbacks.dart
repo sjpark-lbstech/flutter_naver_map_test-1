@@ -15,4 +15,6 @@ typedef void OnMapDoubleTab(LatLng latLng);
 
 typedef void OnMapTwoFingerTab(LatLng latLng);
 
+typedef void OnCameraChange(LatLng latLng);
+
 typedef void OnSymbolTab(LatLng position, String caption);

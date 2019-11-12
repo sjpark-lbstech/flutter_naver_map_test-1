@@ -11,7 +11,7 @@ class NaverMap extends StatefulWidget {
     this.onMapDoubleTab,
     this.onMapTwoFingerTab,
     this.onSymbolTab,
-    this.onCameraMove,
+    this.onCameraChange,
     this.onCameraIdle,
     this.originalBehaviorDisable = false,
     this.initialCameraPosition,
@@ -50,7 +50,7 @@ class NaverMap extends StatefulWidget {
   final OnMapLongTab onMapLongTab;
 
   /// 카메라가 움직일때 호출되는 콜백
-  final VoidCallback onCameraMove;
+  final OnCameraChange onCameraChange;
 
   /// 카메라의 움직임이 완료되었을때 호출되는 콜백
   final VoidCallback onCameraIdle;
@@ -310,9 +310,9 @@ class _NaverMapState extends State<NaverMap> {
       widget.onSymbolTab(position, caption);
   }
 
-  void _cameraMove(){
-    if(widget.onCameraMove != null)
-      widget.onCameraMove();
+  void _cameraMove(LatLng position){
+    if(widget.onCameraChange != null)
+      widget.onCameraChange(position);
   }
 
   void _cameraIdle(){

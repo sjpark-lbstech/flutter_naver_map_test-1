@@ -55,7 +55,7 @@ class _TestMainState extends State<TestMain> {
         onMapDoubleTab: _onMapDoubleTab,
         onMapTwoFingerTab: _onMapTwoFingerTab,
         onSymbolTab: _onSymbolTab,
-        onCameraMove: _onCameraMove,
+        onCameraChange: _onCameraMove,
         onCameraIdle: _onCameraIdle,
         initLocationTrackingMode: LocationTrackingMode.Follow,
       ),
@@ -98,7 +98,7 @@ class _TestMainState extends State<TestMain> {
     print('symbol Tab - LatLng : $position, caption : $caption');
   }
 
-  void _onCameraMove() {
+  void _onCameraMove(LatLng position) {
     print('camera move!');
   }
 

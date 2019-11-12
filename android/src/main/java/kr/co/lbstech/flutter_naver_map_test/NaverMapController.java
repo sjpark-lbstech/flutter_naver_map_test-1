@@ -74,7 +74,6 @@ public class NaverMapController implements
         registrarActivityHashCode = registrar.activity().hashCode();
         methodChannel = new MethodChannel(registrar.messenger(), "flutter_naver_map_test_"+ id);
         methodChannel.setMethodCallHandler(this);
-        listeners = new Listeners(methodChannel, context);
         this.initialMarkers = initialMarkers;
     }
 
@@ -87,6 +86,7 @@ public class NaverMapController implements
         }
         // 맵 완전히 만들어진 이후에 마커 추가.
         setInitialMarkers();
+        listeners = new Listeners(methodChannel, mapView.getContext(), naverMap);
         naverMap.setOnMapClickListener(listeners);
         naverMap.setOnMapLongClickListener(listeners);
         naverMap.setOnMapDoubleTapListener(listeners);
