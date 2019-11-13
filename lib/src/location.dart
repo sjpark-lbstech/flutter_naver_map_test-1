@@ -1,18 +1,20 @@
 part of flutter_naver_map;
 
 /// 위도와 경도가 한 쌍을 이루어서 저장되는 class.
-class LatLng{
+class LatLng {
   const LatLng(double latitude, double longitude)
       : assert(latitude != null),
         assert(longitude != null),
         latitude =
-        (latitude < -90.0 ? -90.0 : (90.0 < latitude ? 90.0 : latitude)),
+            (latitude < -90.0 ? -90.0 : (90.0 < latitude ? 90.0 : latitude)),
         longitude = (longitude + 180.0) % 360.0 - 180.0;
 
   final double latitude;
   final double longitude;
 
-  dynamic _toJson(){
+  List<double> get json => [latitude, longitude];
+
+  dynamic _toJson() {
     return <double>[latitude, longitude];
   }
 
@@ -47,6 +49,9 @@ class LatLngBounds {
 
   /// The northeast corner of the rectangle.
   final LatLng northeast;
+
+
+  List<List<double>> get json => [southwest.json, northeast.json];
 
   dynamic _toList() {
     return <dynamic>[southwest._toJson(), northeast._toJson()];
@@ -97,3 +102,7 @@ class LatLngBounds {
   int get hashCode => hashValues(southwest, northeast);
 }
 
+List<Map<String, double>> _serializeLatLngList(List<LatLng> locations) {
+  if (locations == null) return null;
+  return locations.map((location) => location._toJson()).toList();
+}

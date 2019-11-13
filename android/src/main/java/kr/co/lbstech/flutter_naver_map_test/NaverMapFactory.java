@@ -47,6 +47,12 @@ public class NaverMapFactory extends PlatformViewFactory {
         if (params.containsKey("locationTrackingMode")) {
             builder.setInitialTrackingMode(LocationTrackingMode.values()[(int) params.get("locationTrackingMode")]);
         }
+        if (params.containsKey("polylines")) {
+            builder.setInitialPolylines((List) params.get("polylines"));
+        }
+        if (params.containsKey("paths")) {
+            builder.setInitialPaths((List) params.get("paths"));
+        }
 
         return builder.build(i, context, activityState, pluginRegistrar);
     }

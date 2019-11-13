@@ -4,8 +4,9 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.view.View;
+
+import androidx.annotation.NonNull;
 
 import com.naver.maps.geometry.LatLngBounds;
 import com.naver.maps.map.CameraPosition;
@@ -55,9 +56,16 @@ public class NaverMapController implements
     private final int registrarActivityHashCode;
     private MethodChannel.Result mapReadyResult;
     private List initialMarkers;
+    private List<Object> initialPolylines;
+    private List<Object> initialPaths;
     private HashMap<String, Object> markers = new HashMap<>();
+    private HashMap<String, Object> polylines = new HashMap<>();
     private NaverMapListeners listeners;
     private final LocationTrackingMode locationTrackingMode;
+    private final Float density;
+
+    private PolylinesController polylinesController;
+    private PathsController pathsController;
 
     NaverMapController(
             int id,
@@ -66,6 +74,8 @@ public class NaverMapController implements
             PluginRegistry.Registrar registrar,
             NaverMapOptions options,
             List initialMarkers,
+            List initialPolylines,
+            List initialPaths,
             LocationTrackingMode locationTrackingMode
     ) {
         this.id = id;
@@ -77,18 +87,21 @@ public class NaverMapController implements
         methodChannel.setMethodCallHandler(this);
         listeners = new NaverMapListeners(methodChannel);
         this.initialMarkers = initialMarkers;
+        this.initialPolylines = initialPolylines;
+        this.initialPaths = initialPaths;
         this.locationTrackingMode = locationTrackingMode;
+        this.density = this.registrar.context().getResources().getDisplayMetrics().density;
     }
 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
+        this.polylinesController = new PolylinesController(density, naverMap);
+        this.pathsController = new PathsController(density, naverMap);
         if (mapReadyResult != null) {
             mapReadyResult.success(null);
             mapReadyResult = null;
         }
-        // 맵 완전히 만들어진 이후에 마커 추가.
-        setInitialMarkers();
         naverMap.setOnMapClickListener(listeners);
         naverMap.setOnMapLongClickListener(listeners);
         naverMap.setOnMapDoubleTapListener(listeners);
@@ -96,6 +109,11 @@ public class NaverMapController implements
         naverMap.setOnSymbolClickListener(listeners);
         naverMap.setLocationSource(new FusedLocationSource(registrar.activity(), 0));
         naverMap.setLocationTrackingMode(locationTrackingMode);
+
+        // 맵 완전히 만들어진 이후에 마커 추가.
+        setInitialMarkers();
+        updateInitialPolylines();
+        updateInitialPaths();
     }
 
     @Override
@@ -395,6 +413,30 @@ public class NaverMapController implements
     }
 
     @Override
+    public void setInitialPolylines(List<Object> initialPolylines) {
+        this.initialPolylines = initialPolylines;
+        if (naverMap != null) {
+            updateInitialPolylines();
+        }
+    }
+
+    private void updateInitialPolylines() {
+        polylinesController.addPolylines(initialPolylines);
+    }
+
+    @Override
+    public void setInitialPaths(List<Object> initialPaths) {
+        this.initialPaths = initialPaths;
+        if (naverMap != null) {
+            updateInitialPaths();
+        }
+    }
+
+    private void updateInitialPaths() {
+        pathsController.addPaths(initialPaths);
+    }
+
+    @Override
     public boolean onClick(@NonNull Overlay overlay) {
         if (overlay instanceof Marker) {
             String markerId = MarkerBuilder.getMarkerId((Marker) overlay);
@@ -422,5 +464,4 @@ public class NaverMapController implements
             }
         }
     }
-
 }

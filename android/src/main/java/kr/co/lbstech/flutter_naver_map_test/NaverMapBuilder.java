@@ -26,6 +26,8 @@ import io.flutter.plugin.common.PluginRegistry;
 public class NaverMapBuilder implements NaverMapOptionSink {
     private final NaverMapOptions options = new NaverMapOptions();
     private List initialMarkers;
+    private List<Object> initialPolylines;
+    private List<Object> initialPaths;
     private LocationTrackingMode locationTrackingMode;
 
     NaverMapController build(
@@ -34,8 +36,7 @@ public class NaverMapBuilder implements NaverMapOptionSink {
             AtomicInteger state,
             PluginRegistry.Registrar registrar) {
 
-        final NaverMapController controller
-                = new NaverMapController(id, context, state, registrar, options, initialMarkers, locationTrackingMode);
+        final NaverMapController controller = new NaverMapController(id, context, state, registrar, options, initialMarkers, initialPolylines, initialPaths, locationTrackingMode);
         controller.init();
         return controller;
     }
@@ -171,6 +172,16 @@ public class NaverMapBuilder implements NaverMapOptionSink {
     @Override
     public void setLocationButtonEnable(boolean locationButtonEnable) {
         options.locationButtonEnabled(locationButtonEnable);
+    }
+
+    @Override
+    public void setInitialPolylines(List<Object> initialPolylines) {
+        this.initialPolylines = initialPolylines;
+    }
+
+    @Override
+    public void setInitialPaths(List<Object> initialPaths) {
+        this.initialPaths = initialPaths;
     }
 
     void setInitialCameraPosition(Map<String, Object> cameraPosition) {

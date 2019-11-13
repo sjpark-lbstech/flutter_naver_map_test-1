@@ -10,6 +10,7 @@ class NaverMap extends StatefulWidget {
     this.onMapDoubleTab,
     this.onMapTwoFingerTab,
     this.onSymbolTab,
+    this.pathOverlays,
     this.originalBehaviorDisable = false,
     this.mapType = MapType.Basic,
     this.liteModeEnable = false,
@@ -27,6 +28,7 @@ class NaverMap extends StatefulWidget {
     this.isDevMode = true,
     this.locationTrackingMode = LocationTrackingMode.none,
     this.markers = const [],
+    this.polylines = const {},
   }) : super(key: key);
 
   /// 지도가 완전히 만들어진 후에 컨트롤러를 파라미터로 가지는 콜백.
@@ -162,6 +164,12 @@ class NaverMap extends StatefulWidget {
   /// 지도에 표시될 마커의 리스트입니다.
   final List<Marker> markers;
 
+  /// 지도에 표시될 [PolylineOverlay]의 [Set] 입니다..
+  final Set<PolylineOverlay> polylines;
+
+  /// 지도에 표시될 [PathOverlay]의 [Set] 입니다..
+  final Set<PathOverlay> pathOverlays;
+
   /// 지도가 더블탭될때 콜백되는 메서드
   final OnMapDoubleTab onMapDoubleTab;
 
@@ -215,6 +223,8 @@ class _NaverMapState extends State<NaverMap> {
       'initialCameraPosition': widget.initialCameraPosition.toMap(),
       'options': _naverMapOptions.toMap(),
       'markersToAdd': _serializeMarkerSet(widget.markers) ?? [],
+      'polylines': _serializePolylineOverlaySet(widget.polylines),
+      'paths': _serializePathOverlaySet(widget.pathOverlays),
       'locationTrackingMode': widget.locationTrackingMode.index,
     };
 

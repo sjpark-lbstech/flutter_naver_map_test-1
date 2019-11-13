@@ -69,6 +69,26 @@ class _TestMainState extends State<TestMain> {
         onSymbolTab: _onSymbolTab,
         mapType: _toggle ? MapType.Navi : MapType.Basic,
         indoorEnable: false,
+//        pathOverlays: {
+//          PathOverlay(
+//            PathOverlayId('path'),
+//            [
+//              LatLng(37.476943, 126.963677),
+//              LatLng(37.476943, 126.963677),
+//              LatLng(37.4812213, 126.963777),
+//            ],
+//          )
+//        },
+        pathOverlays: {
+          PathOverlay(
+            PathOverlayId('path'),
+            [
+              LatLng(37.476943, 126.963677),
+              LatLng(37.446943, 126.923677),
+              LatLng(37.4812213, 126.963777),
+            ],
+          )
+        },
         activeLayers: [MapLayer.LAYER_GROUP_BUILDING],
         nightModeEnable: true,
         markers: [
@@ -84,7 +104,7 @@ class _TestMainState extends State<TestMain> {
             onMarkerTab: _onMarkerTab,
           ),
         ],
-        locationTrackingMode: LocationTrackingMode.face,
+        //locationTrackingMode: LocationTrackingMode.face,
       ),
     );
   }
