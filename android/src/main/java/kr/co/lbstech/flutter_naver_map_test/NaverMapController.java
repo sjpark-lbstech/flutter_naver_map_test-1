@@ -190,6 +190,18 @@ public class NaverMapController implements
                             null);
                 }
                 break;
+            case "map#getSize" :
+                {
+                    if(naverMap != null){
+                        Map<String, Integer> data = new HashMap<>();
+                        data.put("width" , naverMap.getWidth());
+                        data.put("height", naverMap.getHeight());
+                        result.success(data);
+                    }else result.error("네이버맵 초기화 안됨.",
+                            "네이버 지도가 생성되기 전에 이 메서드를 사용할 수 없습니다.",
+                            null);
+                }
+                break;
             case "camera#move" :
                 {
                     if (naverMap != null) {

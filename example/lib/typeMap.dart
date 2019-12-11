@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:flutter_naver_map_test/flutter_naver_map_test.dart';
 
 class TypeMap extends StatefulWidget {
@@ -15,6 +18,8 @@ class _TypeMapState extends State<TypeMap> {
     MapType.Satellite,
     MapType.Terrain,
   ];
+
+  Completer<NaverMapController> completer = new Completer();
 
   @override
   void initState() {
@@ -51,6 +56,21 @@ class _TypeMapState extends State<TypeMap> {
       children: <Widget>[
         NaverMap(
           mapType: _types[_idx],
+          markers: [
+            Marker(
+              markerId: "1",
+              position: LatLng(37.559746, 126.964482),
+              onMarkerTab: (m)=>print(m.markerId),
+            ),
+            Marker(
+              markerId: '2',
+              position: LatLng(37.559757, 126.964473),
+              onMarkerTab: (m)=>print(m.markerId),
+              consumeTapEvents: false,
+            ),
+          ],
+          onMapTab: _onMapTabbed,
+          onMapCreated: (cont)=> completer.complete(cont),
         ),
 
         Align(
@@ -81,5 +101,11 @@ class _TypeMapState extends State<TypeMap> {
       _idx++;
       if(_idx > 4) _idx = 0;
     });
+  }
+
+  void _onMapTabbed(LatLng latLng) async{
+    NaverMapController controller = await completer.future;
+    Map<String, int> map = await controller.getSize();
+    print('width = ${map['width']} height = ${map['height']}');
   }
 }

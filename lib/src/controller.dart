@@ -106,6 +106,18 @@ class NaverMapController{
     );
   }
 
+  /// 지도가 보여지는 view 의 크기를 반환.
+  /// Map<String, double>로 반환.
+  ///
+  /// ['width' : 가로 pixel, 'height' : 세로 pixel]
+  Future<Map<String, int>> getSize()async{
+    final Map size = await channel.invokeMethod<Map>('map#getSize');
+    return <String, int>{
+      'width' : size['width'],
+      'height' : size['height']
+    };
+  }
+
   Future<void> moveCamera(CameraUpdate cameraUpdate) async{
     await channel.invokeMethod<void>('camera#move', <String, dynamic>{
       'cameraUpdate' : cameraUpdate._toJson(),
