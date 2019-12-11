@@ -32,8 +32,10 @@ class NaverMapController{
   Future<dynamic> _handleMethodCall(MethodCall call) async {
     switch (call.method){
       case 'marker#onTap':
-        String markerId = call.arguments;
-        _naverMapState._markerTabbed(markerId);
+        String markerId = call.arguments['markerId'];
+        int iconWidth = call.arguments['iconWidth'];
+        int iconHeight = call.arguments['iconHeight'];
+        _naverMapState._markerTabbed(markerId, iconWidth, iconHeight);
         break;
       case 'map#onTap':
         LatLng latLng = LatLng._fromJson(call.arguments['position']);

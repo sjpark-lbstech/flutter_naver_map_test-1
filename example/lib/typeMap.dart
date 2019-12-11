@@ -60,12 +60,13 @@ class _TypeMapState extends State<TypeMap> {
             Marker(
               markerId: "1",
               position: LatLng(37.559746, 126.964482),
-              onMarkerTab: (m)=>print(m.markerId),
+              onMarkerTab: (m, s)=>
+                  print(m.markerId + "\nwidth = ${s['width']} height = ${s['height']}"),
             ),
             Marker(
               markerId: '2',
               position: LatLng(37.559757, 126.964473),
-              onMarkerTab: (m)=>print(m.markerId),
+              onMarkerTab: (m, s)=>print(m.markerId),
               consumeTapEvents: false,
             ),
           ],
@@ -106,6 +107,5 @@ class _TypeMapState extends State<TypeMap> {
   void _onMapTabbed(LatLng latLng) async{
     NaverMapController controller = await completer.future;
     Map<String, int> map = await controller.getSize();
-    print('width = ${map['width']} height = ${map['height']}');
   }
 }

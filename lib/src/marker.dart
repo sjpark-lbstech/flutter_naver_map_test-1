@@ -34,6 +34,9 @@ class Marker{
   /// 예를 들어 마커와 지상 오버레이가 겹쳐져 있고 지상 오버레이에만 클릭 이벤트
   /// 리스너가 지정된 경우, 사용자가 마커를 클릭하더라도 지상 오버레이가 클릭 이벤트를
   /// 받습니다.
+  ///
+  ///
+  /// iconSize 는 'width' 와 'height'의 key값을 가지고 있다.
   OnMarkerTab onMarkerTab;
 
   /// 클릭 리스너가 클릭이벤트를 소진하는 지정할 수 있습니다.
@@ -332,6 +335,10 @@ class Marker{
         'consumeTapEvents: $consumeTapEvents, flat: $flat, '
         'position: $position, visible: $visible, zIndex: $zIndex, '
         'onMarkerTab: $onMarkerTab, infowindow : $infoWindow}';
+  }
+
+  Future<Map<String, int>> getIconSize() async{
+
   }
 }
 

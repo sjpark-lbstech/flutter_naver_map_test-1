@@ -50,7 +50,6 @@ public class Listeners implements
 
     @Override
     public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
-        Log.d("인포 윈도우 테스트", "맵 터치.");
         if(!isMarkerTab){
             window.close();
         }
@@ -113,7 +112,13 @@ public class Listeners implements
             Marker marker = (Marker) overlay;
             marker.setZIndex(marker.getZIndex() + 1);
             String markerId = MarkerBuilder.getMarkerId(marker);
-            channel.invokeMethod("marker#onTap", markerId);
+
+            final Map<String, Object> arguments = new HashMap<>(2);
+            arguments.put("markerId", markerId);
+            arguments.put("iconWidth", marker.getIcon().getIntrinsicWidth(context));
+            arguments.put("iconHeight", marker.getIcon().getIntrinsicHeight(context));
+
+            channel.invokeMethod("marker#onTap", arguments);
 
             final String infoTitle = MarkerBuilder.getInfoWindow(marker);
             if(infoTitle != null){
@@ -124,13 +129,10 @@ public class Listeners implements
                         return infoTitle;
                     }
                 });
-                Log.d("인포 윈도우 테스트", infoTitle);
                 if(marker.getInfoWindow() == null) {
-                    Log.d("인포 윈도우 테스트", "오픈");
                     window.open(marker);
                 }
                 else{
-                    Log.d("인포 윈도우 테스트", "클로즈");
                     window.close();
                 }
             }

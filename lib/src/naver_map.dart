@@ -272,10 +272,13 @@ class _NaverMapState extends State<NaverMap> {
     _markers = _keyByMarkerId(widget.markers);
   }
 
-  void _markerTabbed(String markerId){
+  void _markerTabbed(String markerId, int iconWidth, int iconHeight){
     assert(markerId != null);
     if(_markers[markerId]?.onMarkerTab != null) {
-      _markers[markerId].onMarkerTab(_markers[markerId]);
+      _markers[markerId].onMarkerTab(
+        _markers[markerId],
+        <String, int>{'width' : iconWidth, 'height' : iconHeight},
+      );
     }
   }
 

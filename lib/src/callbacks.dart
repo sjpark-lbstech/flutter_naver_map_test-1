@@ -5,7 +5,7 @@ typedef void MapCreateCallback(NaverMapController controller);
 
 typedef void CameraPositionCallback(CameraPosition position);
 
-typedef void OnMarkerTab(Marker marker);
+typedef void OnMarkerTab(Marker marker, Map<String, int> iconSize);
 
 typedef void OnMapTab(LatLng latLng);
 

@@ -56,7 +56,7 @@ public class NaverMapController implements
     private final int registrarActivityHashCode;
     private MethodChannel.Result mapReadyResult;
     private List initialMarkers;
-    private HashMap<String, Object> markers = new HashMap<>();
+    private HashMap<String, Marker> markers = new HashMap<>();
     private Listeners listeners;
     private int locationTrackingMode;
 
