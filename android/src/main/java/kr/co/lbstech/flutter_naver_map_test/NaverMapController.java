@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.naver.maps.geometry.LatLngBounds;
 import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraPosition;
@@ -25,6 +27,8 @@ import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.NaverMapOptions;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.util.FusedLocationSource;
+import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.util.FusedLocationSource;
 
 import java.util.HashMap;
@@ -52,13 +56,21 @@ public class NaverMapController implements
     private final int registrarActivityHashCode;
     private final Activity activity;
     private List initialMarkers;
+    private List initialPolylines;
+    private List initialPaths;
 
     private NaverMap naverMap;
     private boolean disposed = false;
     private MethodChannel.Result mapReadyResult;
     private HashMap<String, Marker> markers = new HashMap<>();
-    private Listeners listeners;
+    private HashMap<String, Object> polylines = new HashMap<>();
+    private NaverMapListeners listeners;
     private int locationTrackingMode;
+
+    private final Float density;
+
+    private PolylinesController polylinesController;
+    private PathsController pathsController;
 
     NaverMapController(
             int id,
@@ -67,12 +79,19 @@ public class NaverMapController implements
             BinaryMessenger binaryMessenger,
             Activity activity,
             NaverMapOptions options,
-            List initialMarkers){
+            List initialMarkers,
+            List initialPolylines,
+            List initialPaths,
+    ) {
         this.id = id;
         this.mapView = new MapView(context, options);
         this.activityState = activityState;
         this.initialMarkers = initialMarkers;
         this.activity = activity;
+        this.initialPolylines = initialPolylines;
+        this.initialPaths = initialPaths;
+        this.density = context.getResources().getDisplayMetrics().density;
+
         methodChannel = new MethodChannel(binaryMessenger, "flutter_naver_map_test_"+ id);
         registrarActivityHashCode = activity.hashCode();
 
@@ -82,13 +101,15 @@ public class NaverMapController implements
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
-        if(mapReadyResult != null){
+        this.polylinesController = new PolylinesController(density, naverMap);
+        this.pathsController = new PathsController(density, naverMap);
+        if (mapReadyResult != null) {
             mapReadyResult.success(null);
             mapReadyResult = null;
         }
         // 맵 완전히 만들어진 이후에 마커 추가.
-        listeners = new Listeners(methodChannel, mapView.getContext(), naverMap);
-        setInitialMarkers();
+        listeners = new NaverMapListeners(methodChannel);
+//        listeners = new Listeners(methodChannel, mapView.getContext(), naverMap);
         naverMap.setOnMapClickListener(listeners);
         naverMap.setOnMapLongClickListener(listeners);
         naverMap.setOnMapDoubleTapListener(listeners);
@@ -98,6 +119,10 @@ public class NaverMapController implements
         naverMap.addOnCameraIdleListener(listeners);
         naverMap.setLocationSource(new FusedLocationSource(activity, 0xAAFF));
         setLocationTrackingMode(locationTrackingMode);
+
+        setInitialMarkers();
+        updateInitialPolylines();
+        updateInitialPaths();
     }
 
     @Override
@@ -105,7 +130,7 @@ public class NaverMapController implements
         return mapView;
     }
 
-    void init(){
+    void init() {
         switch (activityState.get()) {
             case STOPPED:
                 mapView.onCreate(null);
@@ -145,7 +170,7 @@ public class NaverMapController implements
 
     @Override
     public void dispose() {
-        if(disposed) return;
+        if (disposed) return;
         disposed = true;
         naverMap.setLocationTrackingMode(LocationTrackingMode.None);
         methodChannel.setMethodCallHandler(null);
@@ -352,7 +377,7 @@ public class NaverMapController implements
     @Override
     public void setMapType(int typeIndex) {
         NaverMap.MapType type;
-        switch(typeIndex){
+        switch (typeIndex) {
             case 1:
                 type = NaverMap.MapType.Navi;
                 break;
@@ -395,9 +420,9 @@ public class NaverMapController implements
         naverMap.setLayerGroupEnabled(NaverMap.LAYER_GROUP_BICYCLE, false);
         naverMap.setLayerGroupEnabled(NaverMap.LAYER_GROUP_MOUNTAIN, false);
         naverMap.setLayerGroupEnabled(NaverMap.LAYER_GROUP_CADASTRAL, false);
-        for(int i = 0; i < activeLayers.size(); i ++){
+        for (int i = 0; i < activeLayers.size(); i++) {
             int layerIndex = (int) activeLayers.get(i);
-            switch (layerIndex){
+            switch (layerIndex) {
                 case 0:
                     naverMap.setLayerGroupEnabled(NaverMap.LAYER_GROUP_BUILDING, true);
                     break;
@@ -442,6 +467,30 @@ public class NaverMapController implements
     }
 
     @Override
+    public void setInitialPolylines(List<Object> initialPolylines) {
+        this.initialPolylines = initialPolylines;
+        if (naverMap != null) {
+            updateInitialPolylines();
+        }
+    }
+
+    private void updateInitialPolylines() {
+        polylinesController.addPolylines(initialPolylines);
+    }
+
+    @Override
+    public void setInitialPaths(List<Object> initialPaths) {
+        this.initialPaths = initialPaths;
+        if (naverMap != null) {
+            updateInitialPaths();
+        }
+    }
+
+    private void updateInitialPaths() {
+        pathsController.addPaths(initialPaths);
+    }
+
+    @Override
     public void setLocationTrackingMode(int locationTrackingMode) {
         if(naverMap == null) {
             this.locationTrackingMode = locationTrackingMode;
@@ -474,9 +523,9 @@ public class NaverMapController implements
                 markers.put(markerId, marker);
             }
             Set<String> markerIds = markers.keySet();
-            for(String key : markerIds){
+            for (String key : markerIds) {
                 Marker marker = (Marker) markers.get(key);
-                if(marker != null) marker.setMap(naverMap);
+                if (marker != null) marker.setMap(naverMap);
             }
         }
     }

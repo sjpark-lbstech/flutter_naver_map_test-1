@@ -15,10 +15,13 @@ public interface NaverMapOptionSink {
 
     void setSymbolScale(double symbolScale);
 
-    void setSymbolPerspectiveRatio (double symbolPerspectiveRatio);
+    void setSymbolPerspectiveRatio(double symbolPerspectiveRatio);
 
     void setActiveLayers(List activeLayers);
 
+    /**
+     * flutter 에서 setState()로 값을 변경해도 반영되지 않는 method. 최초 생성시에만 값변경.
+     */
     void setRotationGestureEnable(boolean rotationGestureEnable);
 
     void setScrollGestureEnable(boolean scrollGestureEnable);
@@ -28,6 +31,10 @@ public interface NaverMapOptionSink {
     void setZoomGestureEnable(boolean zoomGestureEnable);
 
     void setLocationButtonEnable(boolean locationButtonEnable);
+
+    void setInitialPolylines(List<Object> initialPolylines);
+
+    void setInitialPaths(List<Object> initialPaths);
 
     void setLocationTrackingMode(int locationTrackingMode);
 

@@ -21,7 +21,7 @@ public class FlutterNaverMapTestPlugin implements
   static final int RESUMED = 3;
   static final int PAUSED = 4;
   static final int STOPPED = 5;
-  static final int SAVEINSTANCESTATE = 6;
+  static final int SAVE_INSTANCE_STATE = 6;
   static final int DESTROYED = 7;
 
   private final AtomicInteger state = new AtomicInteger(0);
@@ -29,7 +29,7 @@ public class FlutterNaverMapTestPlugin implements
   private FlutterPluginBinding pluginBinding;
   private ActivityPluginBinding activityPluginBinding;
 
-  public FlutterNaverMapTestPlugin(Registrar registrar) {
+  private FlutterNaverMapTestPlugin(Registrar registrar) {
     this.registrarActivityHashCode = registrar.activity().hashCode();
   }
 
@@ -112,7 +112,7 @@ public class FlutterNaverMapTestPlugin implements
     if (activity.hashCode() != registrarActivityHashCode) {
       return;
     }
-    state.set(SAVEINSTANCESTATE);
+    state.set(SAVE_INSTANCE_STATE);
   }
 
   @Override

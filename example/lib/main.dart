@@ -13,6 +13,9 @@ class TestMain extends StatefulWidget {
 }
 
 class _TestMainState extends State<TestMain> {
+  Completer<NaverMapController> _controller = Completer<NaverMapController>();
+  bool _toggle = false;
+
   OverlayImage _icon;
   List<String> menus = [
     '타입별 지도 확인',
@@ -20,23 +23,38 @@ class _TestMainState extends State<TestMain> {
 
   @override
   Widget build(BuildContext context) {
-    if(_icon == null){
+    if (_icon == null) {
       ImageConfiguration config = createLocalImageConfiguration(context);
-      OverlayImage.fromAssetImage(config, 'assets/icon.png')
-          .then((icon){
-            setState(() {
-              _icon = icon;
-            });
+      OverlayImage.fromAssetImage(config, 'assets/icon.png').then((icon) {
+        setState(() {
+          _icon = icon;
+        });
       });
     }
-    
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('네이버 맵 테스트', style: TextStyle(color: Colors.black87),),
+        title: Text(
+          '네이버 맵 테스트',
+          style: TextStyle(color: Colors.black87),
+        ),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
       body: _body(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _clickFab,
+        backgroundColor: Colors.indigo,
+        child: _toggle
+            ? Icon(
+                Icons.check,
+                color: Colors.white,
+              )
+            : Icon(
+                Icons.cancel,
+                color: Colors.white,
+              ),
+      ),
     );
   }
 

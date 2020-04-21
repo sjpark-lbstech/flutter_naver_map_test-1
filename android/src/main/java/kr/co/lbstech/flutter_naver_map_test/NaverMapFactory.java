@@ -33,20 +33,26 @@ public class NaverMapFactory extends PlatformViewFactory {
         Map<String, Object> params = (Map<String, Object>) args;
         NaverMapBuilder builder = new NaverMapBuilder();
 
-        if(params.containsKey("initialCameraPosition")) {
+        if (params.containsKey("initialCameraPosition")) {
             Map<String, Object> initPosition = (Map<String, Object>) params.get("initialCameraPosition");
             if(initPosition != null) builder.setInitialCameraPosition(initPosition);
         }
-        if(params.containsKey("options")){
+        if (params.containsKey("options")) {
             Map<String, Object> options = (Map<String, Object>) params.get("options");
-            if(options.containsKey("isDevMode")){
+            if (options.containsKey("isDevMode")) {
                 boolean isDevMode = (boolean) options.get("isDevMode");
                 builder.setDevMode(isDevMode);
             }
             Convert.carveMapOptions(builder, options);
         }
-        if(params.containsKey("markersToAdd")){
+        if (params.containsKey("markersToAdd")) {
             builder.setInitialMarkers((List) params.get("markersToAdd"));
+        }
+        if (params.containsKey("polylines")) {
+            builder.setInitialPolylines((List) params.get("polylines"));
+        }
+        if (params.containsKey("paths")) {
+            builder.setInitialPaths((List) params.get("paths"));
         }
 
         return builder.build(

@@ -4,6 +4,8 @@ part of flutter_naver_map;
 class OverlayImage{
   const OverlayImage._(this._json);
 
+  Uint8List get blob => Uint8List.fromList([]);
+
   final dynamic _json;
 
   dynamic _toJson() => _json;

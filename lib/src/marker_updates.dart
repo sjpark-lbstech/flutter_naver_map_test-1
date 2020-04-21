@@ -4,14 +4,11 @@ part of flutter_naver_map;
 ///
 /// [NaverMapController] 에서 마커를 업데이트할 떄 사용된다.
 class _MarkerUpdates {
-
   /// 업데이트 이전의 [Marker]와 새로운 [Marker]를 이용해서
   /// [_MarkerUpdates] 객체를 생성한다.
   _MarkerUpdates.from(Set<Marker> previous, Set<Marker> current) {
-    if (previous == null)
-      previous = Set<Marker>.identity();
-    if (current == null)
-      current = Set<Marker>.identity();
+    previous ??= Set<Marker>.identity();
+    current ??= Set<Marker>.identity();
 
     final Map<String, Marker> previousMarkers = _keyByMarkerId(previous);
     final Map<String, Marker> currentMarkers = _keyByMarkerId(current);
@@ -24,7 +21,7 @@ class _MarkerUpdates {
     }
 
     final Set<String> _markerIdsToRemove =
-    prevMarkerIds.difference(currentMarkerIds);
+        prevMarkerIds.difference(currentMarkerIds);
 
     final Set<Marker> _markersToAdd = currentMarkerIds
         .difference(prevMarkerIds)
