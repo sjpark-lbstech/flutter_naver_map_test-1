@@ -1,23 +1,29 @@
 package kr.co.lbstech.flutter_naver_map_test;
 
+import android.app.Activity;
 import android.content.Context;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import io.flutter.plugin.common.PluginRegistry;
+import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.StandardMessageCodec;
 import io.flutter.plugin.platform.PlatformView;
 import io.flutter.plugin.platform.PlatformViewFactory;
 
 public class NaverMapFactory extends PlatformViewFactory {
-    private final PluginRegistry.Registrar pluginRegistrar;
     private final AtomicInteger activityState;
+    private final BinaryMessenger binaryMessenger;
+    private final Activity activity;
 
-    public NaverMapFactory(AtomicInteger state, PluginRegistry.Registrar registrar) {
+    public NaverMapFactory(
+            AtomicInteger state,
+            BinaryMessenger binaryMessenger,
+            Activity activity) {
         super(StandardMessageCodec.INSTANCE);
-        pluginRegistrar = registrar;
+        this.activity = activity;
+        this.binaryMessenger = binaryMessenger;
         activityState = state;
     }
 
@@ -43,6 +49,11 @@ public class NaverMapFactory extends PlatformViewFactory {
             builder.setInitialMarkers((List) params.get("markersToAdd"));
         }
 
-        return builder.build(i, context, activityState, pluginRegistrar);
+        return builder.build(
+                i,
+                context,
+                activityState,
+                binaryMessenger,
+                activity);
     }
 }

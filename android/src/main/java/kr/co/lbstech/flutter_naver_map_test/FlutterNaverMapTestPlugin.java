@@ -3,14 +3,19 @@ package kr.co.lbstech.flutter_naver_map_test;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
-import android.util.Log;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /** FlutterNaverMapTestPlugin */
-public class FlutterNaverMapTestPlugin implements Application.ActivityLifecycleCallbacks {
+public class FlutterNaverMapTestPlugin implements
+        FlutterPlugin,
+        Application.ActivityLifecycleCallbacks,
+        ActivityAware{
   static final int CREATED = 1;
   static final int STARTED = 2;
   static final int RESUMED = 3;
@@ -18,8 +23,11 @@ public class FlutterNaverMapTestPlugin implements Application.ActivityLifecycleC
   static final int STOPPED = 5;
   static final int SAVEINSTANCESTATE = 6;
   static final int DESTROYED = 7;
+
   private final AtomicInteger state = new AtomicInteger(0);
   private final int registrarActivityHashCode;
+  private FlutterPluginBinding pluginBinding;
+  private ActivityPluginBinding activityPluginBinding;
 
   public FlutterNaverMapTestPlugin(Registrar registrar) {
     this.registrarActivityHashCode = registrar.activity().hashCode();
@@ -36,9 +44,29 @@ public class FlutterNaverMapTestPlugin implements Application.ActivityLifecycleC
     registrar.activity().getApplication().registerActivityLifecycleCallbacks(plugin);
     registrar
           .platformViewRegistry()
-          .registerViewFactory("flutter_naver_map_test", new NaverMapFactory(plugin.state, registrar));
+          .registerViewFactory(
+                  "flutter_naver_map_test",
+                  new NaverMapFactory(
+                          plugin.state,
+                          registrar.messenger(),
+                          registrar.activity()
+                  ));
   }
 
+  // ===================== FlutterPlugin =========================
+
+  @Override
+  public void onAttachedToEngine(FlutterPluginBinding binding) {
+    pluginBinding = binding;
+  }
+
+  @Override
+  public void onDetachedFromEngine(FlutterPluginBinding binding) {
+    pluginBinding = null;
+  }
+
+
+  // =================== ActivityLifeCycleCallBack ===================
   @Override
   public void onActivityCreated(Activity activity, Bundle bundle) {
     if (activity.hashCode() != registrarActivityHashCode) {
@@ -94,5 +122,40 @@ public class FlutterNaverMapTestPlugin implements Application.ActivityLifecycleC
     }
     activity.getApplication().unregisterActivityLifecycleCallbacks(this);
     state.set(DESTROYED);
+  }
+
+
+  // ========================== ActivityAware =================================
+
+
+  @Override
+  public void onAttachedToActivity(ActivityPluginBinding binding) {
+    activityPluginBinding = binding;
+    binding.getActivity().getApplication().registerActivityLifecycleCallbacks(this);
+    pluginBinding
+            .getPlatformViewRegistry()
+            .registerViewFactory(
+                    "flutter_naver_map_test",
+                    new NaverMapFactory(
+                            state,
+                            pluginBinding.getBinaryMessenger(),
+                            binding.getActivity()
+                    ));
+  }
+
+  @Override
+  public void onDetachedFromActivityForConfigChanges() {
+    activityPluginBinding.getActivity().getApplication().unregisterActivityLifecycleCallbacks(this);
+  }
+
+  @Override
+  public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
+    activityPluginBinding = binding;
+    binding.getActivity().getApplication().registerActivityLifecycleCallbacks(this);
+  }
+
+  @Override
+  public void onDetachedFromActivity() {
+    activityPluginBinding.getActivity().getApplication().unregisterActivityLifecycleCallbacks(this);
   }
 }

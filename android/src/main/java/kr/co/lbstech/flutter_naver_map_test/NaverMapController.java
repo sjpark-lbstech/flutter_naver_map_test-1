@@ -25,7 +25,6 @@ import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.NaverMapOptions;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.Marker;
-import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.util.FusedLocationSource;
 
 import java.util.HashMap;
@@ -34,9 +33,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.platform.PlatformView;
 
 public class NaverMapController implements
@@ -47,15 +46,16 @@ public class NaverMapController implements
         NaverMapOptionSink{
 
     int id;
-    private final AtomicInteger activityState;
-    private final PluginRegistry.Registrar registrar;
     private final MapView mapView;
-    private NaverMap naverMap;
+    private final AtomicInteger activityState;
     private final MethodChannel methodChannel;
-    private boolean disposed = false;
     private final int registrarActivityHashCode;
-    private MethodChannel.Result mapReadyResult;
+    private final Activity activity;
     private List initialMarkers;
+
+    private NaverMap naverMap;
+    private boolean disposed = false;
+    private MethodChannel.Result mapReadyResult;
     private HashMap<String, Marker> markers = new HashMap<>();
     private Listeners listeners;
     private int locationTrackingMode;
@@ -64,17 +64,19 @@ public class NaverMapController implements
             int id,
             Context context,
             AtomicInteger activityState,
-            PluginRegistry.Registrar registrar,
+            BinaryMessenger binaryMessenger,
+            Activity activity,
             NaverMapOptions options,
             List initialMarkers){
         this.id = id;
-        this.registrar = registrar;
         this.mapView = new MapView(context, options);
         this.activityState = activityState;
-        registrarActivityHashCode = registrar.activity().hashCode();
-        methodChannel = new MethodChannel(registrar.messenger(), "flutter_naver_map_test_"+ id);
-        methodChannel.setMethodCallHandler(this);
         this.initialMarkers = initialMarkers;
+        this.activity = activity;
+        methodChannel = new MethodChannel(binaryMessenger, "flutter_naver_map_test_"+ id);
+        registrarActivityHashCode = activity.hashCode();
+
+        methodChannel.setMethodCallHandler(this);
     }
 
     @Override
@@ -85,8 +87,8 @@ public class NaverMapController implements
             mapReadyResult = null;
         }
         // 맵 완전히 만들어진 이후에 마커 추가.
-        setInitialMarkers();
         listeners = new Listeners(methodChannel, mapView.getContext(), naverMap);
+        setInitialMarkers();
         naverMap.setOnMapClickListener(listeners);
         naverMap.setOnMapLongClickListener(listeners);
         naverMap.setOnMapDoubleTapListener(listeners);
@@ -94,7 +96,7 @@ public class NaverMapController implements
         naverMap.setOnSymbolClickListener(listeners);
         naverMap.addOnCameraChangeListener(listeners);
         naverMap.addOnCameraIdleListener(listeners);
-        naverMap.setLocationSource(new FusedLocationSource(registrar.activity(), 0xAAFF));
+        naverMap.setLocationSource(new FusedLocationSource(activity, 0xAAFF));
         setLocationTrackingMode(locationTrackingMode);
     }
 
@@ -137,7 +139,7 @@ public class NaverMapController implements
                 throw new IllegalArgumentException(
                         "Cannot interpret " + activityState.get() + " as an activity state");
         }
-        registrar.activity().getApplication().registerActivityLifecycleCallbacks(this);
+        activity.getApplication().registerActivityLifecycleCallbacks(this);
         mapView.getMapAsync(this);
     }
 
@@ -148,7 +150,7 @@ public class NaverMapController implements
         naverMap.setLocationTrackingMode(LocationTrackingMode.None);
         methodChannel.setMethodCallHandler(null);
         mapView.onDestroy();
-        registrar.activity().getApplication().unregisterActivityLifecycleCallbacks(this);
+        activity.getApplication().unregisterActivityLifecycleCallbacks(this);
     }
 
     @SuppressWarnings("ConstantConditions")

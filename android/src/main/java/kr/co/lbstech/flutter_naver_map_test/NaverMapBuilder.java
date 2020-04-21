@@ -1,5 +1,6 @@
 package kr.co.lbstech.flutter_naver_map_test;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.naver.maps.map.NaverMap;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import io.flutter.plugin.common.PluginRegistry;
+import io.flutter.plugin.common.BinaryMessenger;
 
 /**
  *  안에 [setDevMode] 라는 메서드가 있는데,
@@ -31,10 +32,17 @@ public class NaverMapBuilder implements NaverMapOptionSink{
             int id,
             Context context,
             AtomicInteger state,
-            PluginRegistry.Registrar registrar){
+            BinaryMessenger binaryMessenger,
+            Activity activity){
 
-        final NaverMapController controller
-                = new NaverMapController(id, context, state, registrar, options, initialMarkers);
+        final NaverMapController controller = new NaverMapController(
+                id,
+                context,
+                state,
+                binaryMessenger,
+                activity,
+                options,
+                initialMarkers);
         controller.init();
         controller.setLocationTrackingMode(locationTrackingMode);
         return controller;
