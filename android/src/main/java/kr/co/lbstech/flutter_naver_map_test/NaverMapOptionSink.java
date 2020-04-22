@@ -32,8 +32,6 @@ public interface NaverMapOptionSink {
 
     void setLocationButtonEnable(boolean locationButtonEnable);
 
-    void setInitialPolylines(List<Object> initialPolylines);
-
     void setInitialPaths(List<Object> initialPaths);
 
     void setLocationTrackingMode(int locationTrackingMode);

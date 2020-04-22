@@ -7,9 +7,6 @@ import com.naver.maps.geometry.LatLngBounds;
 import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.overlay.OverlayImage;
-import com.naver.maps.map.overlay.PolylineOverlay;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -165,51 +162,7 @@ public class Convert {
         return pattern;
     }
 
-    @NotNull
-    public static String interpretPolyline(@NotNull Object o, @NotNull PolylineSink sink) {
-        final Map<?, ?> data = (Map) o;
-        final Object color = data.get("color");
-        if (color != null) {
-            sink.setColor((Number) color);
-        }
-        final Object endCap = data.get("endCap");
-        if (endCap != null) {
-            sink.setLineCap(PolylineOverlay.LineCap.values()[(int) endCap]);
-        }
-        final Object jointType = data.get("jointType");
-        if (jointType != null) {
-            sink.setJointType(PolylineOverlay.LineJoin.values()[(int) jointType]);
-        }
-        final Object visible = data.get("visible");
-        if (visible != null) {
-            sink.setVisible((boolean) visible);
-        }
-        final Object width = data.get("width");
-        if (width != null) {
-            sink.setWidth((int) width);
-        }
-        final Object globalZIndex = data.get("globalZIndex");
-        if (globalZIndex != null) {
-            sink.setGlobalZIndex((int) globalZIndex);
-        }
-        final Object coords = data.get("coords");
-        if (coords != null) {
-            sink.setCoords(toCoords(coords));
-        }
-        final Object pattern = data.get("pattern");
-        if (pattern != null) {
-            sink.setPattern(toPattern(pattern));
-        }
-        final String polylineId = (String) data.get("polylineOverlayId");
-        if (polylineId == null) {
-            throw new IllegalArgumentException("polylineOverlayId was null");
-        } else {
-            return polylineId;
-        }
-    }
-
-    @NotNull
-    public static String interpretPath(@NotNull Object o, @NotNull PathSink sink) {
+    public static String interpretPath(Object o, PathSink sink) {
         final Map<?, ?> data = (Map) o;
 
         final Object coords = data.get("coords");

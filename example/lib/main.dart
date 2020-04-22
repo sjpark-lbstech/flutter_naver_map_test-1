@@ -43,7 +43,7 @@ class _TestMainState extends State<TestMain> {
       ),
       body: _body(),
       floatingActionButton: FloatingActionButton(
-        onPressed: _clickFab,
+//        onPressed: _clickFab,
         backgroundColor: Colors.indigo,
         child: _toggle
             ? Icon(

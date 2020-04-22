@@ -27,7 +27,6 @@ public class NaverMapBuilder implements NaverMapOptionSink {
     private final NaverMapOptions options = new NaverMapOptions();
     private List initialMarkers;
     private int locationTrackingMode;
-    private List initialPolylines;
     private List initialPaths;
 
     NaverMapController build(
@@ -44,7 +43,8 @@ public class NaverMapBuilder implements NaverMapOptionSink {
                 binaryMessenger,
                 activity,
                 options,
-                initialMarkers);
+                initialMarkers,
+                initialPaths);
         controller.init();
         controller.setLocationTrackingMode(locationTrackingMode);
         return controller;
@@ -189,11 +189,6 @@ public class NaverMapBuilder implements NaverMapOptionSink {
     }
 
     @Override
-    public void setInitialPolylines(List<Object> initialPolylines) {
-        this.initialPolylines = initialPolylines;
-    }
-
-    @Override
     public void setInitialPaths(List<Object> initialPaths) {
         this.initialPaths = initialPaths;
     }
@@ -209,10 +204,6 @@ public class NaverMapBuilder implements NaverMapOptionSink {
 
     void setInitialMarkers(List initialMarkers) {
         this.initialMarkers = initialMarkers;
-    }
-
-    void setInitialTrackingMode(LocationTrackingMode locationTrackingMode) {
-        this.locationTrackingMode = locationTrackingMode;
     }
 
 }

@@ -32,7 +32,6 @@ class NaverMap extends StatefulWidget {
     this.isDevMode = true,
     this.initLocationTrackingMode = LocationTrackingMode.NoFollow,
     this.markers = const [],
-    this.polylines = const {},
   }) : super(key : key);
 
   /// 지도가 완전히 만들어진 후에 컨트롤러를 파라미터로 가지는 콜백.
@@ -174,9 +173,6 @@ class NaverMap extends StatefulWidget {
   /// 지도에 표시될 마커의 리스트입니다.
   final List<Marker> markers;
 
-  /// 지도에 표시될 [PolylineOverlay]의 [Set] 입니다..
-  final Set<PolylineOverlay> polylines;
-
   /// 지도에 표시될 [PathOverlay]의 [Set] 입니다..
   final Set<PathOverlay> pathOverlays;
 
@@ -209,12 +205,14 @@ class _NaverMapState extends State<NaverMap> {
   _NaverMapOptions _naverMapOptions;
 
   Map<String, Marker> _markers = <String, Marker>{};
+  Map<PathOverlayId, PathOverlay> _paths = <PathOverlayId, PathOverlay>{};
 
   @override
   void initState() {
     super.initState();
     _naverMapOptions = _NaverMapOptions.fromWidget(widget);
     _markers = _keyByMarkerId(widget.markers);
+    _paths = _keyByPathOverlayId(widget.pathOverlays);
   }
 
   Future<void> onPlatformViewCreated(int id) async {
@@ -233,10 +231,9 @@ class _NaverMapState extends State<NaverMap> {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> createParams = <String, dynamic>{
-      'initialCameraPosition': widget.initialCameraPosition.toMap(),
+      'initialCameraPosition': widget.initialCameraPosition?.toMap(),
       'options': _naverMapOptions.toMap(),
       'markersToAdd': _serializeMarkerSet(widget.markers) ?? [],
-      'polylines': _serializePolylineOverlaySet(widget.polylines),
       'paths': _serializePathOverlaySet(widget.pathOverlays),
     };
 
@@ -259,6 +256,7 @@ class _NaverMapState extends State<NaverMap> {
     super.didUpdateWidget(oldWidget);
     _updateOptions();
     _updateMarkers();
+    _updatePathOverlay();
   }
 
   void _updateOptions() async {
@@ -278,6 +276,15 @@ class _NaverMapState extends State<NaverMap> {
       widget.markers?.toSet(),
     ));
     _markers = _keyByMarkerId(widget.markers);
+  }
+
+  void _updatePathOverlay() async {
+    final NaverMapController controller = await _controller.future;
+    controller._updatePathOverlay(_PathOverlayUpdates.from(
+        _paths.values?.toSet(),
+        widget.pathOverlays?.toSet())
+    );
+    _paths = _keyByPathOverlayId(widget.pathOverlays);
   }
 
   void _markerTabbed(String markerId, int iconWidth, int iconHeight){

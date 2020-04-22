@@ -86,6 +86,14 @@ class NaverMapController{
     );
   }
 
+  Future<void> _updatePathOverlay(_PathOverlayUpdates pathOverlayUpdates) async {
+    assert(pathOverlayUpdates != null);
+    await channel.invokeMethod(
+      'pathOverlay#update',
+      pathOverlayUpdates._toMap(),
+    );
+  }
+
   /// 현제 지도에 보여지는 영역에 대한 [LatLngBounds] 객체를 리턴.
   Future<LatLngBounds> getVisibleRegion() async {
     final Map<String, dynamic> latLngBounds =

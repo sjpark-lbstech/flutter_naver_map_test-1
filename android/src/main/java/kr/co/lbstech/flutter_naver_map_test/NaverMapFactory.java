@@ -48,9 +48,6 @@ public class NaverMapFactory extends PlatformViewFactory {
         if (params.containsKey("markersToAdd")) {
             builder.setInitialMarkers((List) params.get("markersToAdd"));
         }
-        if (params.containsKey("polylines")) {
-            builder.setInitialPolylines((List) params.get("polylines"));
-        }
         if (params.containsKey("paths")) {
             builder.setInitialPaths((List) params.get("paths"));
         }

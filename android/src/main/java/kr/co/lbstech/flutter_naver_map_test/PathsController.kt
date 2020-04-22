@@ -1,5 +1,6 @@
 package kr.co.lbstech.flutter_naver_map_test
 
+import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.PathOverlay
 
@@ -19,13 +20,22 @@ class PathsController(
 
         val pathBuilder = PathBuilder(density = density)
         val pathId = Convert.interpretPath(path, pathBuilder)
-        val pathOverlay = pathBuilder.build()
-        addPath(pathId = pathId, pathOverlay = pathOverlay)
+        
+        if (pathIdToController.containsKey(pathId)){
+            val controller = pathIdToController[pathId]
+            Convert.interpretPath(path, controller)
+        }else {
+            val pathOverlay = pathBuilder.build()
+            pathOverlay.map = naverMap
+            val controller = PathController(pathOverlay, density)
+            pathIdToController[pathId] = controller
+        }
     }
-
-    private fun addPath(pathId: String, pathOverlay: PathOverlay) {
-        pathOverlay.map = naverMap
-        val controller = PathController(pathOverlay, density)
-        pathIdToController[pathId] = controller
+    
+    fun removePath(pathId : String) {
+        if(!pathIdToController.containsKey(pathId)) return
+        val pathOverlay = pathIdToController[pathId]?.getPathOverlay();
+        pathOverlay?.map = null
+        pathIdToController.remove(pathId);
     }
 }

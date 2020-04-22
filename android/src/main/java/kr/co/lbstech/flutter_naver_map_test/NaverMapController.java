@@ -15,8 +15,6 @@ import androidx.annotation.NonNull;
 
 import android.view.View;
 
-import androidx.annotation.NonNull;
-
 import com.naver.maps.geometry.LatLngBounds;
 import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraPosition;
@@ -27,8 +25,6 @@ import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.NaverMapOptions;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.Marker;
-import com.naver.maps.map.util.FusedLocationSource;
-import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.util.FusedLocationSource;
 
 import java.util.HashMap;
@@ -56,20 +52,17 @@ public class NaverMapController implements
     private final int registrarActivityHashCode;
     private final Activity activity;
     private List initialMarkers;
-    private List initialPolylines;
     private List initialPaths;
 
     private NaverMap naverMap;
     private boolean disposed = false;
     private MethodChannel.Result mapReadyResult;
     private HashMap<String, Marker> markers = new HashMap<>();
-    private HashMap<String, Object> polylines = new HashMap<>();
     private NaverMapListeners listeners;
     private int locationTrackingMode;
 
     private final Float density;
 
-    private PolylinesController polylinesController;
     private PathsController pathsController;
 
     NaverMapController(
@@ -80,15 +73,13 @@ public class NaverMapController implements
             Activity activity,
             NaverMapOptions options,
             List initialMarkers,
-            List initialPolylines,
-            List initialPaths,
+            List initialPaths
     ) {
         this.id = id;
         this.mapView = new MapView(context, options);
         this.activityState = activityState;
         this.initialMarkers = initialMarkers;
         this.activity = activity;
-        this.initialPolylines = initialPolylines;
         this.initialPaths = initialPaths;
         this.density = context.getResources().getDisplayMetrics().density;
 
@@ -101,15 +92,13 @@ public class NaverMapController implements
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
-        this.polylinesController = new PolylinesController(density, naverMap);
         this.pathsController = new PathsController(density, naverMap);
         if (mapReadyResult != null) {
             mapReadyResult.success(null);
             mapReadyResult = null;
         }
         // 맵 완전히 만들어진 이후에 마커 추가.
-        listeners = new NaverMapListeners(methodChannel);
-//        listeners = new Listeners(methodChannel, mapView.getContext(), naverMap);
+        listeners = new NaverMapListeners(methodChannel, mapView.getContext(), naverMap);
         naverMap.setOnMapClickListener(listeners);
         naverMap.setOnMapLongClickListener(listeners);
         naverMap.setOnMapDoubleTapListener(listeners);
@@ -121,7 +110,6 @@ public class NaverMapController implements
         setLocationTrackingMode(locationTrackingMode);
 
         setInitialMarkers();
-        updateInitialPolylines();
         updateInitialPaths();
     }
 
@@ -274,6 +262,17 @@ public class NaverMapController implements
                         }
                     }
                     result.success(null);
+                }
+                break;
+            case "pathOverlay#update":
+                {
+                    List pathToAddOrUpdate = methodCall.argument("pathToAddOrUpdate");
+                    List pathToRemove = methodCall.argument("pathIdsToRemove");
+                    pathsController.addPaths(pathToAddOrUpdate);
+                    for (Object data : pathToRemove) {
+                        String pathId = (String) data;
+                        pathsController.removePath(pathId);
+                    }
                 }
                 break;
             case "tracking#mode":
@@ -464,18 +463,6 @@ public class NaverMapController implements
     @Override
     public void setLocationButtonEnable(boolean locationButtonEnable) {
         naverMap.getUiSettings().setLocationButtonEnabled(locationButtonEnable);
-    }
-
-    @Override
-    public void setInitialPolylines(List<Object> initialPolylines) {
-        this.initialPolylines = initialPolylines;
-        if (naverMap != null) {
-            updateInitialPolylines();
-        }
-    }
-
-    private void updateInitialPolylines() {
-        polylinesController.addPolylines(initialPolylines);
     }
 
     @Override

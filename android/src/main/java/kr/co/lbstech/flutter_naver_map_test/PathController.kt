@@ -70,4 +70,8 @@ class PathController(
     override fun setOutlineWidth(width: Int) {
         pathOverlay.outlineWidth = (width.toFloat() * density).toInt()
     }
+    
+    fun getPathOverlay(): PathOverlay {
+        return pathOverlay
+    }
 }
