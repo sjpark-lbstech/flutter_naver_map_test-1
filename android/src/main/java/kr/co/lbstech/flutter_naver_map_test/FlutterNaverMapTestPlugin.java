@@ -2,25 +2,25 @@ package kr.co.lbstech.flutter_naver_map_test;
 
 import android.app.Activity;
 import android.app.Application;
-import android.arch.lifecycle.DefaultLifecycleObserver;
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleOwner;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
-import io.flutter.embedding.engine.plugins.lifecycle.HiddenLifecycleReference;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /** FlutterNaverMapTestPlugin */
 public class FlutterNaverMapTestPlugin implements
         FlutterPlugin,
         Application.ActivityLifecycleCallbacks,
-        DefaultLifecycleObserver,
+        LifecycleObserver,
         ActivityAware{
   static final int CREATED = 1;
   static final int STARTED = 2;
@@ -34,7 +34,7 @@ public class FlutterNaverMapTestPlugin implements
   private int registrarActivityHashCode;
   private FlutterPluginBinding pluginBinding;
   private ActivityPluginBinding activityPluginBinding;
-  private Lifecycle lifecycle;
+//  private Lifecycle lifecycle;
 
   // =============================== constructor =======================================
 
@@ -138,35 +138,35 @@ public class FlutterNaverMapTestPlugin implements
 
   // ========================== DefaultLifeCycleObserver =================================
 
-  @Override
-  public void onCreate(@NonNull LifecycleOwner owner) {
-    state.set(CREATED);
-  }
-
-  @Override
-  public void onStart(@NonNull LifecycleOwner owner) {
-    state.set(STARTED);
-  }
-
-  @Override
-  public void onResume(@NonNull LifecycleOwner owner) {
-    state.set(RESUMED);
-  }
-
-  @Override
-  public void onPause(@NonNull LifecycleOwner owner) {
-    state.set(PAUSED);
-  }
-
-  @Override
-  public void onStop(@NonNull LifecycleOwner owner) {
-    state.set(STOPPED);
-  }
-
-  @Override
-  public void onDestroy(@NonNull LifecycleOwner owner) {
-    state.set(DESTROYED);
-  }
+//  @Override
+//  public void onCreate(@NonNull LifecycleOwner owner) {
+//    state.set(CREATED);
+//  }
+//
+//  @Override
+//  public void onStart(@NonNull LifecycleOwner owner) {
+//    state.set(STARTED);
+//  }
+//
+//  @Override
+//  public void onResume(@NonNull LifecycleOwner owner) {
+//    state.set(RESUMED);
+//  }
+//
+//  @Override
+//  public void onPause(@NonNull LifecycleOwner owner) {
+//    state.set(PAUSED);
+//  }
+//
+//  @Override
+//  public void onStop(@NonNull LifecycleOwner owner) {
+//    state.set(STOPPED);
+//  }
+//
+//  @Override
+//  public void onDestroy(@NonNull LifecycleOwner owner) {
+//    state.set(DESTROYED);
+//  }
 
 
   // ========================== ActivityAware =================================
@@ -177,9 +177,12 @@ public class FlutterNaverMapTestPlugin implements
     activityPluginBinding = binding;
     binding.getActivity().getApplication().registerActivityLifecycleCallbacks(this);
 
-    HiddenLifecycleReference hiddenLifecycleReference = (HiddenLifecycleReference) binding.getLifecycle();
-    Lifecycle lifecycle = hiddenLifecycleReference.getLifecycle();
-    lifecycle.addObserver(this);
+//    HiddenLifecycleReference hiddenLifecycleReference = (HiddenLifecycleReference) binding.getLifecycle();
+//    Lifecycle lifecycle = hiddenLifecycleReference.getLifecycle();
+//    lifecycle.addObserver(this);
+
+    androidx.lifecycle.Lifecycle lifecycleX = (androidx.lifecycle.Lifecycle) binding.getLifecycle();
+    lifecycleX.addObserver(this);
 
     pluginBinding
             .getPlatformViewRegistry()
@@ -208,5 +211,39 @@ public class FlutterNaverMapTestPlugin implements
     activityPluginBinding.getActivity().getApplication().unregisterActivityLifecycleCallbacks(this);
   }
 
+
+
+
+    // ======================== Lifecycle Observer ===========================
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    private void onCreate(){
+      state.set(CREATED);
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    private void onStart(){
+        state.set(STARTED);
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    private void onResume(){
+        state.set(RESUMED);
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    private void onPause(){
+        state.set(PAUSED);
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    private void onStop(){
+        state.set(STOPPED);
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    private void onDestroy(){
+        state.set(DESTROYED);
+    }
 
 }
