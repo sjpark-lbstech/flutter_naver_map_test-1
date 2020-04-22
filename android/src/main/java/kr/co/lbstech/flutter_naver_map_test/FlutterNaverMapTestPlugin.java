@@ -2,19 +2,25 @@ package kr.co.lbstech.flutter_naver_map_test;
 
 import android.app.Activity;
 import android.app.Application;
+import android.arch.lifecycle.DefaultLifecycleObserver;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleOwner;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
+import io.flutter.embedding.engine.plugins.lifecycle.HiddenLifecycleReference;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /** FlutterNaverMapTestPlugin */
 public class FlutterNaverMapTestPlugin implements
         FlutterPlugin,
         Application.ActivityLifecycleCallbacks,
+        DefaultLifecycleObserver,
         ActivityAware{
   static final int CREATED = 1;
   static final int STARTED = 2;
@@ -28,6 +34,7 @@ public class FlutterNaverMapTestPlugin implements
   private int registrarActivityHashCode;
   private FlutterPluginBinding pluginBinding;
   private ActivityPluginBinding activityPluginBinding;
+  private Lifecycle lifecycle;
 
   // =============================== constructor =======================================
 
@@ -46,6 +53,7 @@ public class FlutterNaverMapTestPlugin implements
     }
     FlutterNaverMapTestPlugin plugin = new FlutterNaverMapTestPlugin(registrar.activity());
     registrar.activity().getApplication().registerActivityLifecycleCallbacks(plugin);
+    // 라이프사이클 콜백
     registrar
           .platformViewRegistry()
           .registerViewFactory(
@@ -128,6 +136,38 @@ public class FlutterNaverMapTestPlugin implements
     state.set(DESTROYED);
   }
 
+  // ========================== DefaultLifeCycleObserver =================================
+
+  @Override
+  public void onCreate(@NonNull LifecycleOwner owner) {
+    state.set(CREATED);
+  }
+
+  @Override
+  public void onStart(@NonNull LifecycleOwner owner) {
+    state.set(STARTED);
+  }
+
+  @Override
+  public void onResume(@NonNull LifecycleOwner owner) {
+    state.set(RESUMED);
+  }
+
+  @Override
+  public void onPause(@NonNull LifecycleOwner owner) {
+    state.set(PAUSED);
+  }
+
+  @Override
+  public void onStop(@NonNull LifecycleOwner owner) {
+    state.set(STOPPED);
+  }
+
+  @Override
+  public void onDestroy(@NonNull LifecycleOwner owner) {
+    state.set(DESTROYED);
+  }
+
 
   // ========================== ActivityAware =================================
 
@@ -136,6 +176,11 @@ public class FlutterNaverMapTestPlugin implements
   public void onAttachedToActivity(ActivityPluginBinding binding) {
     activityPluginBinding = binding;
     binding.getActivity().getApplication().registerActivityLifecycleCallbacks(this);
+
+    HiddenLifecycleReference hiddenLifecycleReference = (HiddenLifecycleReference) binding.getLifecycle();
+    Lifecycle lifecycle = hiddenLifecycleReference.getLifecycle();
+    lifecycle.addObserver(this);
+
     pluginBinding
             .getPlatformViewRegistry()
             .registerViewFactory(
@@ -162,4 +207,6 @@ public class FlutterNaverMapTestPlugin implements
   public void onDetachedFromActivity() {
     activityPluginBinding.getActivity().getApplication().unregisterActivityLifecycleCallbacks(this);
   }
+
+
 }
