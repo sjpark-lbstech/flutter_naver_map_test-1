@@ -4,10 +4,6 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.OnLifecycleEvent;
-
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -19,7 +15,6 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 public class FlutterNaverMapTestPlugin implements
         FlutterPlugin,
         Application.ActivityLifecycleCallbacks,
-        LifecycleObserver,
         ActivityAware{
   static final int CREATED = 1;
   static final int STARTED = 2;
@@ -33,7 +28,6 @@ public class FlutterNaverMapTestPlugin implements
   private int registrarActivityHashCode;
   private FlutterPluginBinding pluginBinding;
   private ActivityPluginBinding activityPluginBinding;
-//  private Lifecycle lifecycle;
 
   // =============================== constructor =======================================
 
@@ -135,38 +129,6 @@ public class FlutterNaverMapTestPlugin implements
     state.set(DESTROYED);
   }
 
-  // ========================== DefaultLifeCycleObserver =================================
-
-//  @Override
-//  public void onCreate(@NonNull LifecycleOwner owner) {
-//    state.set(CREATED);
-//  }
-//
-//  @Override
-//  public void onStart(@NonNull LifecycleOwner owner) {
-//    state.set(STARTED);
-//  }
-//
-//  @Override
-//  public void onResume(@NonNull LifecycleOwner owner) {
-//    state.set(RESUMED);
-//  }
-//
-//  @Override
-//  public void onPause(@NonNull LifecycleOwner owner) {
-//    state.set(PAUSED);
-//  }
-//
-//  @Override
-//  public void onStop(@NonNull LifecycleOwner owner) {
-//    state.set(STOPPED);
-//  }
-//
-//  @Override
-//  public void onDestroy(@NonNull LifecycleOwner owner) {
-//    state.set(DESTROYED);
-//  }
-
 
   // ========================== ActivityAware =================================
 
@@ -174,14 +136,8 @@ public class FlutterNaverMapTestPlugin implements
   @Override
   public void onAttachedToActivity(ActivityPluginBinding binding) {
     activityPluginBinding = binding;
+    registrarActivityHashCode = binding.getActivity().hashCode();
     binding.getActivity().getApplication().registerActivityLifecycleCallbacks(this);
-
-//    HiddenLifecycleReference hiddenLifecycleReference = (HiddenLifecycleReference) binding.getLifecycle();
-//    Lifecycle lifecycle = hiddenLifecycleReference.getLifecycle();
-//    lifecycle.addObserver(this);
-
-    androidx.lifecycle.Lifecycle lifecycleX = (androidx.lifecycle.Lifecycle) binding.getLifecycle();
-    lifecycleX.addObserver(this);
 
     pluginBinding
             .getPlatformViewRegistry()
@@ -210,39 +166,5 @@ public class FlutterNaverMapTestPlugin implements
     activityPluginBinding.getActivity().getApplication().unregisterActivityLifecycleCallbacks(this);
   }
 
-
-
-
-    // ======================== Lifecycle Observer ===========================
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    private void onCreate(){
-      state.set(CREATED);
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    private void onStart(){
-        state.set(STARTED);
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    private void onResume(){
-        state.set(RESUMED);
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    private void onPause(){
-        state.set(PAUSED);
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    private void onStop(){
-        state.set(STOPPED);
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    private void onDestroy(){
-        state.set(DESTROYED);
-    }
 
 }
