@@ -11,7 +11,7 @@ pubspec.yaml 문서에서 dependencies 에 아래의 코드를 추가하십시�
 ```dart
   flutter_naver_map_test:
     git:
-      url: https://github.com/LBSTECH/flutter_naver_map_test-1.git
+      url: https://github.com/LBSTECH/flutter_naver_map.git
       ref: master
 ```
 
