@@ -25,13 +25,9 @@ public class FlutterNaverMapTestPlugin implements
   static final int DESTROYED = 7;
 
   private final AtomicInteger state = new AtomicInteger(0);
-  private final int registrarActivityHashCode;
+  private final int registrarActivityHashCode = -1;
   private FlutterPluginBinding pluginBinding;
   private ActivityPluginBinding activityPluginBinding;
-
-  public FlutterNaverMapTestPlugin(Registrar registrar) {
-    this.registrarActivityHashCode = registrar.activity().hashCode();
-  }
 
   /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
@@ -40,7 +36,7 @@ public class FlutterNaverMapTestPlugin implements
       // 이 플러그인이 포어그라운드에서만 돌아가기 때문에 백그라운드에서 등록하는 것을 막습니다.
       return;
     }
-    FlutterNaverMapTestPlugin plugin = new FlutterNaverMapTestPlugin(registrar);
+    FlutterNaverMapTestPlugin plugin = new FlutterNaverMapTestPlugin();
     registrar.activity().getApplication().registerActivityLifecycleCallbacks(plugin);
     registrar
           .platformViewRegistry()
