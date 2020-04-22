@@ -29,7 +29,7 @@ public class FlutterNaverMapTestPlugin implements
   private FlutterPluginBinding pluginBinding;
   private ActivityPluginBinding activityPluginBinding;
 
-  private FlutterNaverMapTestPlugin(Registrar registrar) {
+  public FlutterNaverMapTestPlugin(Registrar registrar) {
     this.registrarActivityHashCode = registrar.activity().hashCode();
   }
 
