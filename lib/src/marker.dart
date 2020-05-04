@@ -135,10 +135,11 @@ class Marker{
   final Color subCaptionHaloColor;
 
   /// 아이콘의 너비, 높이를 지정합니다.
-  ///
-  ///
+  /// <br/>
+  /// 단위 : 픽셀
+  /// <br/>
   /// 값이 없는 경우 이미지의 너비를 따릅니다.
-  final double width, height;
+  final int width, height;
 
   /// 오버레이가 보이는 최대, 최소 줌 레벨을 지정합니다. 지도의 줌 레벨이
   /// 오버레이의 최대 줌 레벨보다 크거나 지도의 줌 레벨이 오보레이의
