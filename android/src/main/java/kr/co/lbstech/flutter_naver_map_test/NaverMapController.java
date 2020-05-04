@@ -371,6 +371,7 @@ public class NaverMapController implements
     @Override
     public void setIndoorEnable(boolean indoorEnable) {
         naverMap.setIndoorEnabled(indoorEnable);
+        naverMap.getUiSettings().setIndoorLevelPickerEnabled(indoorEnable);
     }
 
     @Override

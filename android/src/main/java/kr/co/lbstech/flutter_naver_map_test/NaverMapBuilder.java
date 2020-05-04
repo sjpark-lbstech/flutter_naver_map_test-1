@@ -61,6 +61,7 @@ public class NaverMapBuilder implements NaverMapOptionSink {
 
     public void setIndoorEnable(boolean indoorEnable) {
         options.indoorEnabled(indoorEnable);
+        options.indoorLevelPickerEnabled(indoorEnable);
     }
 
     public void setMapType(int typeIndex) {
@@ -175,7 +176,7 @@ public class NaverMapBuilder implements NaverMapOptionSink {
     @Override
     public void setZoomGestureEnable(boolean zoomGestureEnable) {
         options.zoomGesturesEnabled(zoomGestureEnable);
-        if (!zoomGestureEnable) options.zoomControlEnabled(false);
+        options.zoomControlEnabled(false);
     }
 
     @Override

@@ -62,6 +62,8 @@ class _TypeMapState extends State<TypeMap> {
       children: <Widget>[
         NaverMap(
           mapType: _types[_idx],
+          locationButtonEnable: true,
+          indoorEnable: true,
           markers: [
             Marker(
               markerId: "1",
