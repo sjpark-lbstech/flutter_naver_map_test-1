@@ -297,6 +297,14 @@ class _NaverMapState extends State<NaverMap> {
     }
   }
 
+  void _pathOverlayTabbed(String pathId){
+    assert(pathId != null);
+    PathOverlayId pathOverlayId = PathOverlayId(pathId);
+    if (_paths[pathOverlayId].onPathOverlayTab != null){
+      _paths[pathOverlayId].onPathOverlayTab(pathOverlayId);
+    }
+  }
+
   void _mapTap(LatLng position) {
     assert(position != null);
     if (widget.onMapTab != null) {

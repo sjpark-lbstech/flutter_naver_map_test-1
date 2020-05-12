@@ -10,10 +10,12 @@ import com.naver.maps.map.Symbol;
 import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
+import com.naver.maps.map.overlay.PathOverlay;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import io.flutter.Log;
 import io.flutter.plugin.common.MethodChannel;
 
 public class NaverMapListeners implements
@@ -135,6 +137,15 @@ public class NaverMapListeners implements
                 }
             }
             return MarkerBuilder.getConsumeTabEvent((Marker) overlay);
+        }else if (overlay instanceof PathOverlay){
+            String id = (String) overlay.getTag();
+            if (id == null) id = "";
+
+            Log.i("PATH_TAB", "PATH 이벤트 발동" + id);
+
+            final Map<String, Object> arguments = new HashMap<>(2);
+            arguments.put("pathId", id);
+            channel.invokeMethod("path#onTab", arguments);
         }
         return false;
     }

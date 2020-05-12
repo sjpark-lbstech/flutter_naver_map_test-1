@@ -6,7 +6,8 @@ import com.naver.maps.map.overlay.PathOverlay
 
 class PathsController(
         private val density: Float,
-        private val naverMap: NaverMap) {
+        private val naverMap: NaverMap,
+        private val listener : NaverMapListeners) {
 
     private val pathIdToController = HashMap<String, PathController>()
 
@@ -25,8 +26,9 @@ class PathsController(
             val controller = pathIdToController[pathId]
             Convert.interpretPath(path, controller)
         }else {
-            val pathOverlay = pathBuilder.build()
+            val pathOverlay = pathBuilder.build(pathId)
             pathOverlay.map = naverMap
+            pathOverlay.onClickListener = listener
             val controller = PathController(pathOverlay, density)
             pathIdToController[pathId] = controller
         }

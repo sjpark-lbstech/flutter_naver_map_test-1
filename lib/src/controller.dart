@@ -37,6 +37,10 @@ class NaverMapController{
         int iconHeight = call.arguments['iconHeight'];
         _naverMapState._markerTabbed(markerId, iconWidth, iconHeight);
         break;
+      case 'path#onTab' :
+        String pathId = call.arguments['pathId'];
+        _naverMapState._pathOverlayTabbed(pathId);
+        break;
       case 'map#onTap':
         LatLng latLng = LatLng._fromJson(call.arguments['position']);
         _naverMapState._mapTap(latLng);

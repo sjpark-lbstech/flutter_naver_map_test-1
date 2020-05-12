@@ -128,6 +128,12 @@ class PathOverlay {
   /// 기본값은 10입니다.
   final int width;
 
+  /// 패스 오버레이를 탭했을 경우 호출되는 콜백입니다.
+  /// <br/>
+  ///
+  /// 탭 이벤트를 먹은 [PathOverlayId]를 반환합니다.
+  final OnPathOverlayTab onPathOverlayTab;
+
   Map<String, dynamic> get json => {
         'pathOverlayId': pathOverlayId.value,
         'coords': coords.map<List<double>>((coord) => coord.json).toList(),
@@ -164,6 +170,7 @@ class PathOverlay {
     this.patternInterval = 50,
     this.progress = 0,
     this.width = 10,
+    this.onPathOverlayTab,
   })  : assert(pathOverlayId != null),
         assert(coords != null),
         assert(coords.length > 1);
@@ -185,6 +192,7 @@ class PathOverlay {
     int patternIntervalParams,
     double progressParams,
     int widthParams,
+    OnPathOverlayTab onPathOverlayTabParams,
   }) =>
       PathOverlay(
         pathOverlayId,
@@ -204,6 +212,7 @@ class PathOverlay {
         patternInterval: patternIntervalParams ?? patternInterval,
         progress: progressParams ?? progress,
         width: widthParams ?? width,
+        onPathOverlayTab: onPathOverlayTabParams ?? onPathOverlayTab,
       );
 
   /// 같은 값을 지닌 새로운 [PathOverlay] 객체를 생성합니다.

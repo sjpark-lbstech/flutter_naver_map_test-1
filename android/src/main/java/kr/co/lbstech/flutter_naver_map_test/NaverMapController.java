@@ -92,13 +92,14 @@ public class NaverMapController implements
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
-        this.pathsController = new PathsController(density, naverMap);
         if (mapReadyResult != null) {
             mapReadyResult.success(null);
             mapReadyResult = null;
         }
         // 맵 완전히 만들어진 이후에 마커 추가.
         listeners = new NaverMapListeners(methodChannel, mapView.getContext(), naverMap);
+        this.pathsController = new PathsController(density, naverMap, listeners);
+
         naverMap.setOnMapClickListener(listeners);
         naverMap.setOnMapLongClickListener(listeners);
         naverMap.setOnMapDoubleTapListener(listeners);

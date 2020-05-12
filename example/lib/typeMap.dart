@@ -88,10 +88,11 @@ class _TypeMapState extends State<TypeMap> {
               PathOverlayId('1'),
               _coords,
               color: Colors.black87,
-              width: 5,
+              width: 10,
               outlineWidth: 0,
               progress: 0.7,
-              passedColor: Colors.amber
+              passedColor: Colors.amber,
+              onPathOverlayTab: _onPathTab
             ),
           },
           onMapTab: _onMapTabbed,
@@ -131,7 +132,10 @@ class _TypeMapState extends State<TypeMap> {
   void _onMapTabbed(LatLng latLng) async{
 //    NaverMapController controller = await completer.future;
     setState(() {
-      _coords.add(latLng);
     });
+  }
+
+  void _onPathTab(PathOverlayId pathOverlayId) {
+    print(pathOverlayId);
   }
 }

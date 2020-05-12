@@ -8,7 +8,10 @@ import com.naver.maps.map.overlay.PathOverlay
 class PathBuilder(private val density: Float) : PathSink {
     private val pathOverlay = PathOverlay()
 
-    fun build(): PathOverlay = pathOverlay
+    fun build(pathId : String): PathOverlay {
+        pathOverlay.tag = pathId
+        return pathOverlay
+    }
 
     override fun setCoords(coords: List<LatLng>) {
         pathOverlay.coords = coords
