@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.Symbol;
+import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
@@ -146,6 +147,17 @@ public class NaverMapListeners implements
             final Map<String, Object> arguments = new HashMap<>(2);
             arguments.put("pathId", id);
             channel.invokeMethod("path#onTab", arguments);
+            return true;
+        }else if (overlay instanceof CircleOverlay){
+            String id = (String) overlay.getTag();
+            if (id == null) id = "";
+
+            Log.i("CIRCLE_TAB", "CIRCLE 이벤트 발동" + id);
+
+            final Map<String, Object> arguments = new HashMap<>(2);
+            arguments.put("overlayId", id);
+            channel.invokeMethod("circle#onTab", arguments);
+            return true;
         }
         return false;
     }

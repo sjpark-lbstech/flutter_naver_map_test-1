@@ -29,4 +29,8 @@ part 'src/paht_overlay_updates.dart';
 
 part 'src/ui.dart';
 
+part 'src/circle_overlay.dart';
+
+part 'src/circle_update.dart';
+
 const String VIEW_TYPE = 'flutter_naver_map_test';

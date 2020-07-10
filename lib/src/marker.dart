@@ -338,9 +338,6 @@ class Marker{
         'onMarkerTab: $onMarkerTab, infowindow : $infoWindow}';
   }
 
-  Future<Map<String, int>> getIconSize() async{
-
-  }
 }
 
 List<Map<String, dynamic>> _serializeMarkerSet(Iterable<Marker> markers) {

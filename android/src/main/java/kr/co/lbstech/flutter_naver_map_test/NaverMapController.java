@@ -10,6 +10,7 @@ import static kr.co.lbstech.flutter_naver_map_test.FlutterNaverMapTestPlugin.DES
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
@@ -20,19 +21,32 @@ import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.LocationTrackingMode;
+import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.NaverMapOptions;
 import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.Overlay;
+import com.naver.maps.map.renderer.glsurfaceview.MapGLSurfaceView;
 import com.naver.maps.map.util.FusedLocationSource;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import io.flutter.Log;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -46,13 +60,15 @@ public class NaverMapController implements
         NaverMapOptionSink{
 
     int id;
-    private final MapView mapView;
+    private final BinaryMessenger binaryMessenger;
+    private MapView mapView;
     private final AtomicInteger activityState;
     private final MethodChannel methodChannel;
     private final int registrarActivityHashCode;
     private final Activity activity;
     private List initialMarkers;
     private List initialPaths;
+    private List initialCircles;
 
     private NaverMap naverMap;
     private boolean disposed = false;
@@ -64,6 +80,7 @@ public class NaverMapController implements
     private final Float density;
 
     private PathsController pathsController;
+    private CircleOverlayController circleOverlayController;
 
     NaverMapController(
             int id,
@@ -73,15 +90,19 @@ public class NaverMapController implements
             Activity activity,
             NaverMapOptions options,
             List initialMarkers,
-            List initialPaths
+            List initialPaths,
+            List initialCircles
     ) {
         this.id = id;
         this.mapView = new MapView(context, options);
+
         this.activityState = activityState;
-        this.initialMarkers = initialMarkers;
         this.activity = activity;
-        this.initialPaths = initialPaths;
         this.density = context.getResources().getDisplayMetrics().density;
+        this.binaryMessenger = binaryMessenger;
+        this.initialMarkers = initialMarkers;
+        this.initialPaths = initialPaths;
+        this.initialCircles = initialCircles;
 
         methodChannel = new MethodChannel(binaryMessenger, "flutter_naver_map_test_"+ id);
         registrarActivityHashCode = activity.hashCode();
@@ -98,7 +119,9 @@ public class NaverMapController implements
         }
         // 맵 완전히 만들어진 이후에 마커 추가.
         listeners = new NaverMapListeners(methodChannel, mapView.getContext(), naverMap);
+
         this.pathsController = new PathsController(density, naverMap, listeners);
+        this.circleOverlayController = new CircleOverlayController(naverMap, listeners);
 
         naverMap.setOnMapClickListener(listeners);
         naverMap.setOnMapLongClickListener(listeners);
@@ -110,8 +133,9 @@ public class NaverMapController implements
         naverMap.setLocationSource(new FusedLocationSource(activity, 0xAAFF));
         setLocationTrackingMode(locationTrackingMode);
 
-        setInitialMarkers();
         updateInitialPaths();
+        setInitialMarkers();
+        setInitialCircles();
     }
 
     @Override
@@ -277,29 +301,64 @@ public class NaverMapController implements
                 }
                 break;
             case "tracking#mode":
-            {
-                if(naverMap != null){
-                    int mode = methodCall.argument("locationTrackingMode");
-                    switch (mode){
-                        case 0:
-                            naverMap.setLocationTrackingMode(LocationTrackingMode.None);
-                            break;
-                        case 1:
-                            naverMap.setLocationTrackingMode(LocationTrackingMode.NoFollow);
-                            break;
-                        case 2:
-                            naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
-                            break;
-                        default:
-                            naverMap.setLocationTrackingMode(LocationTrackingMode.Face);
-                            break;
-                    }
+                {
+                    if(naverMap != null){
+                        int mode = methodCall.argument("locationTrackingMode");
+                        switch (mode){
+                            case 0:
+                                naverMap.setLocationTrackingMode(LocationTrackingMode.None);
+                                break;
+                            case 1:
+                                naverMap.setLocationTrackingMode(LocationTrackingMode.NoFollow);
+                                break;
+                            case 2:
+                                naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+                                break;
+                            default:
+                                naverMap.setLocationTrackingMode(LocationTrackingMode.Face);
+                                break;
+                        }
+                        result.success(null);
+                    } else result.error("네이버맵 초기화 안됨.",
+                            "네이버 지도가 생성되기 전에 이 메서드를 사용할 수 없습니다.",
+                            null);
+                }
+                break;
+            case "map#capture" :
+                {
+                    if (naverMap == null) result.success(null);
+                    naverMap.takeSnapshot((Bitmap snapshot) -> {
+                        result.success(treatCapture(snapshot));
+                    });
+                }
+                break;
+            case "circleOverlay#update":
+                {
+                    if (circleOverlayController == null) result.success(null);
+
+                    List circlesToAdd = methodCall.argument("circlesToAdd");
+                    List circleIdsToRemove = methodCall.argument("circleIdsToRemove");
+                    List circlesToChange = methodCall.argument("circlesToChange");
+                    circleOverlayController.add(circlesToAdd);
+                    circleOverlayController.remove(circleIdsToRemove);
+                    circleOverlayController.modify(circlesToChange);
                     result.success(null);
-                } else result.error("네이버맵 초기화 안됨.",
-                        "네이버 지도가 생성되기 전에 이 메서드를 사용할 수 없습니다.",
-                        null);
-            }
-            break;
+                }
+                break;
+        }
+    }
+
+    private String treatCapture(Bitmap snapshot){
+        try {
+            File file = File.createTempFile("", ".jpg", activity.getApplicationContext().getCacheDir());
+            FileOutputStream fos = new FileOutputStream(file);
+            snapshot.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+            return file.getPath();
+        } catch (IOException e) {
+            Log.e("takeCapture", e.getMessage());
+            return null;
         }
     }
 
@@ -517,6 +576,10 @@ public class NaverMapController implements
                 if (marker != null) marker.setMap(naverMap);
             }
         }
+    }
+
+    private void setInitialCircles(){
+        circleOverlayController.setInitialCircleOverlays(initialCircles);
     }
 
 }

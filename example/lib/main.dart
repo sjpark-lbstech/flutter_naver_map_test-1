@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_naver_map_test/flutter_naver_map_test.dart';
+import 'package:flutter_naver_map_test_example/circle_overlay_test.dart';
 
 import './typeMap.dart';
+import 'capture.dart';
 
 void main() => runApp(MaterialApp(home: TestMain(),));
 
@@ -19,6 +21,8 @@ class _TestMainState extends State<TestMain> {
   OverlayImage _icon;
   List<String> menus = [
     '타입별 지도 확인',
+    '지도 캡처 테스트',
+    '원형 오버레이',
   ];
 
   @override
@@ -69,9 +73,16 @@ class _TestMainState extends State<TestMain> {
           return GestureDetector(
             onTap: ()=>_onMenuTab(menu),
             child: Container(
-              padding: EdgeInsets.all(8),
+              color: Theme.of(context).primaryColor,
+              padding: EdgeInsets.all(16),
+              margin: EdgeInsets.symmetric(vertical: 8),
               child: Center(
-                child: Text(menu),
+                child: Text(
+                  menu,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
           );
@@ -85,6 +96,13 @@ class _TestMainState extends State<TestMain> {
       case '타입별 지도 확인':
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context)=>TypeMap()));
+        break;
+      case '지도 캡처 테스트' :
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context)=>CaptureTest()));
+        break;
+      case '원형 오버레이' :
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) => CircleOverlayTest()));
         break;
     }
   }

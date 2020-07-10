@@ -32,6 +32,7 @@ class NaverMap extends StatefulWidget {
     this.isDevMode = true,
     this.initLocationTrackingMode = LocationTrackingMode.NoFollow,
     this.markers = const [],
+    this.circles = const [],
   }) : super(key : key);
 
   /// 지도가 완전히 만들어진 후에 컨트롤러를 파라미터로 가지는 콜백.
@@ -175,6 +176,9 @@ class NaverMap extends StatefulWidget {
 
   /// 지도에 표시될 [PathOverlay]의 [Set] 입니다..
   final Set<PathOverlay> pathOverlays;
+  
+  /// 지도에 표시될 [CircleOverlay]의 [List]입니다.
+  final List<CircleOverlay> circles;
 
   /// 지도가 더블탭될때 콜백되는 메서드
   final OnMapDoubleTab onMapDoubleTab;
@@ -205,6 +209,7 @@ class _NaverMapState extends State<NaverMap> {
   _NaverMapOptions _naverMapOptions;
 
   Map<String, Marker> _markers = <String, Marker>{};
+  Map<String, CircleOverlay> _circles = <String, CircleOverlay>{};
   Map<PathOverlayId, PathOverlay> _paths = <PathOverlayId, PathOverlay>{};
 
   @override
@@ -213,6 +218,7 @@ class _NaverMapState extends State<NaverMap> {
     _naverMapOptions = _NaverMapOptions.fromWidget(widget);
     _markers = _keyByMarkerId(widget.markers);
     _paths = _keyByPathOverlayId(widget.pathOverlays);
+    _circles = _keyByCircleId(widget.circles);
   }
 
   Future<void> onPlatformViewCreated(int id) async {
@@ -234,7 +240,8 @@ class _NaverMapState extends State<NaverMap> {
       'initialCameraPosition': widget.initialCameraPosition?.toMap(),
       'options': _naverMapOptions.toMap(),
       'markersToAdd': _serializeMarkerSet(widget.markers) ?? [],
-      'paths': _serializePathOverlaySet(widget.pathOverlays),
+      'paths': _serializePathOverlaySet(widget.pathOverlays) ?? [],
+      'circles' : _serializeCircleSet(widget.circles) ?? [],
     };
 
     if (defaultTargetPlatform == TargetPlatform.android) {
@@ -257,6 +264,7 @@ class _NaverMapState extends State<NaverMap> {
     _updateOptions();
     _updateMarkers();
     _updatePathOverlay();
+    _updateCircleOverlay();
   }
 
   void _updateOptions() async {
@@ -287,7 +295,17 @@ class _NaverMapState extends State<NaverMap> {
     _paths = _keyByPathOverlayId(widget.pathOverlays);
   }
 
-  void _markerTabbed(String markerId, int iconWidth, int iconHeight){
+  void _updateCircleOverlay() async{
+    final NaverMapController controller = await _controller.future;
+    controller._updateCircleOverlay(_CircleOverlayUpdate.from(
+      _circles.values?.toSet(),
+      widget.circles?.toSet(),
+    ));
+    _circles = _keyByCircleId(widget.circles);
+  }
+
+
+  void _markerTapped(String markerId, int iconWidth, int iconHeight){
     assert(markerId != null);
     if(_markers[markerId]?.onMarkerTab != null) {
       _markers[markerId].onMarkerTab(
@@ -297,11 +315,18 @@ class _NaverMapState extends State<NaverMap> {
     }
   }
 
-  void _pathOverlayTabbed(String pathId){
+  void _pathOverlayTapped(String pathId){
     assert(pathId != null);
     PathOverlayId pathOverlayId = PathOverlayId(pathId);
-    if (_paths[pathOverlayId].onPathOverlayTab != null){
+    if (_paths[pathOverlayId]?.onPathOverlayTab != null){
       _paths[pathOverlayId].onPathOverlayTab(pathOverlayId);
+    }
+  }
+
+  void _circleOverlayTapped(String overlayId){
+    assert(overlayId != null);
+    if (_circles[overlayId]?.onTap != null){
+      _circles[overlayId].onTap(overlayId);
     }
   }
 

@@ -51,6 +51,9 @@ public class NaverMapFactory extends PlatformViewFactory {
         if (params.containsKey("paths")) {
             builder.setInitialPaths((List) params.get("paths"));
         }
+        if (params.containsKey("circles")) {
+            builder.setInitialCircles((List) params.get("circles"));
+        }
 
         return builder.build(
                 i,

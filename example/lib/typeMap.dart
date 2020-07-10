@@ -18,12 +18,9 @@ class _TypeMapState extends State<TypeMap> {
     MapType.Terrain,
   ];
 
-  List<LatLng> _coords = [
-    LatLng(37.559749, 126.964350),
-    LatLng(37.559315, 126.962917),
-    LatLng(37.559668, 126.962569),
-    LatLng(37.561182, 126.963588),
-  ];
+  List<LatLng> _coords = [];
+
+  Color _lineColor = Colors.amber;
 
   Completer<NaverMapController> completer = new Completer();
 
@@ -83,18 +80,18 @@ class _TypeMapState extends State<TypeMap> {
               consumeTapEvents: false,
             ),
           ],
-          pathOverlays: {
+          pathOverlays: _coords.length >= 2 ? {
             PathOverlay(
               PathOverlayId('1'),
               _coords,
-              color: Colors.black87,
+              color: _lineColor,
+              passedColor: _lineColor,
               width: 10,
               outlineWidth: 0,
               progress: 0.7,
-              passedColor: Colors.amber,
               onPathOverlayTab: _onPathTab
             ),
-          },
+          } : null,
           onMapTab: _onMapTabbed,
           onMapCreated: (cont)=> completer.complete(cont),
         ),
@@ -130,10 +127,17 @@ class _TypeMapState extends State<TypeMap> {
   }
 
   void _onMapTabbed(LatLng latLng) async{
-//    NaverMapController controller = await completer.future;
+    NaverMapController controller = await completer.future;
+
     setState(() {
+      _coords.add(latLng);
+      _coords.forEach((element) {
+        print('${element.latitude}, ${element.longitude}');
+      });
     });
+
   }
+
 
   void _onPathTab(PathOverlayId pathOverlayId) {
     print(pathOverlayId);

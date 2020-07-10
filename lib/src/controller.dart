@@ -2,30 +2,30 @@ part of flutter_naver_map;
 
 class NaverMapController{
   NaverMapController._(
-    this.channel,
+    this._channel,
     CameraPosition initialCameraPosition,
     this._naverMapState
-  ) : assert(channel != null)  {
-    channel.setMethodCallHandler(_handleMethodCall);
+  ) : assert(_channel != null)  {
+    _channel.setMethodCallHandler(_handleMethodCall);
   }
 
   static Future<NaverMapController> init(
     int id,
-    CameraPosition initalCameraPosition,
+    CameraPosition initialCameraPosition,
     _NaverMapState naverMapState
   ) async {
     assert(id != null);
     final MethodChannel channel = MethodChannel(VIEW_TYPE + '_$id');
-    await channel.invokeMethod<void>('map#waitFoeMap');
 
+    await channel.invokeMethod<void>('map#waitFoeMap');
     return NaverMapController._(
       channel,
-      initalCameraPosition,
+      initialCameraPosition,
       naverMapState,
     );
   }
 
-  final MethodChannel channel;
+  final MethodChannel _channel;
 
   final _NaverMapState _naverMapState;
 
@@ -35,11 +35,15 @@ class NaverMapController{
         String markerId = call.arguments['markerId'];
         int iconWidth = call.arguments['iconWidth'];
         int iconHeight = call.arguments['iconHeight'];
-        _naverMapState._markerTabbed(markerId, iconWidth, iconHeight);
+        _naverMapState._markerTapped(markerId, iconWidth, iconHeight);
         break;
       case 'path#onTab' :
         String pathId = call.arguments['pathId'];
-        _naverMapState._pathOverlayTabbed(pathId);
+        _naverMapState._pathOverlayTapped(pathId);
+        break;
+      case 'circle#onTab' :
+        String overlayId = call.arguments['overlayId'];
+        _naverMapState._circleOverlayTapped(overlayId);
         break;
       case 'map#onTap':
         LatLng latLng = LatLng._fromJson(call.arguments['position']);
@@ -74,7 +78,7 @@ class NaverMapController{
 
   Future<void> _updateMapOptions(Map<String, dynamic> optionsUpdate) async {
     assert(optionsUpdate != null);
-    await channel.invokeMethod(
+    await _channel.invokeMethod(
       'map#update',
       <String, dynamic>{
         'options': optionsUpdate,
@@ -84,7 +88,7 @@ class NaverMapController{
 
   Future<void> _updateMarkers(_MarkerUpdates markerUpdate) async{
     assert(markerUpdate != null);
-    await channel.invokeMethod<void>(
+    await _channel.invokeMethod<void>(
       'markers#update',
       markerUpdate._toMap(),
     );
@@ -92,16 +96,24 @@ class NaverMapController{
 
   Future<void> _updatePathOverlay(_PathOverlayUpdates pathOverlayUpdates) async {
     assert(pathOverlayUpdates != null);
-    await channel.invokeMethod(
+    await _channel.invokeMethod(
       'pathOverlay#update',
       pathOverlayUpdates._toMap(),
+    );
+  }
+
+  Future<void> _updateCircleOverlay(_CircleOverlayUpdate circleOverlayUpdate) async{
+    assert(circleOverlayUpdate != null);
+    await _channel.invokeMethod(
+      'circleOverlay#update',
+      circleOverlayUpdate._toMap(),
     );
   }
 
   /// 현제 지도에 보여지는 영역에 대한 [LatLngBounds] 객체를 리턴.
   Future<LatLngBounds> getVisibleRegion() async {
     final Map<String, dynamic> latLngBounds =
-    await channel.invokeMapMethod<String, dynamic>('map#getVisibleRegion');
+    await _channel.invokeMapMethod<String, dynamic>('map#getVisibleRegion');
     final LatLng southwest = LatLng._fromJson(latLngBounds['southwest']);
     final LatLng northeast = LatLng._fromJson(latLngBounds['northeast']);
 
@@ -110,7 +122,7 @@ class NaverMapController{
 
   /// 현제 지도의 중심점 좌표에 대한 [CameraPosition] 객체를 리턴.
   Future<CameraPosition> getCameraPosition() async {
-    final Map position = await channel
+    final Map position = await _channel
         .invokeMethod<Map>('map#getPosition');
     return CameraPosition(
       target: LatLng._fromJson(position['target']),
@@ -125,7 +137,7 @@ class NaverMapController{
   ///
   /// ['width' : 가로 pixel, 'height' : 세로 pixel]
   Future<Map<String, int>> getSize()async{
-    final Map size = await channel.invokeMethod<Map>('map#getSize');
+    final Map size = await _channel.invokeMethod<Map>('map#getSize');
     return <String, int>{
       'width' : size['width'],
       'height' : size['height']
@@ -133,16 +145,22 @@ class NaverMapController{
   }
 
   Future<void> moveCamera(CameraUpdate cameraUpdate) async{
-    await channel.invokeMethod<void>('camera#move', <String, dynamic>{
+    await _channel.invokeMethod<void>('camera#move', <String, dynamic>{
       'cameraUpdate' : cameraUpdate._toJson(),
     });
   }
 
   Future<void> setLocationTrackingMode(LocationTrackingMode mode) async{
     if(mode == null) return;
-    await channel.invokeMethod('tracking#mode', <String, dynamic>{
+    await _channel.invokeMethod('tracking#mode', <String, dynamic>{
       'locationTrackingMode' : mode.index,
     });
+  }
+
+  /// 스냅샷 찍는 method.
+  /// return - File path 를 리턴한다.
+  Future<String> takeSnapshot() async{
+    return _channel.invokeMethod<String>('map#capture');
   }
 
 }

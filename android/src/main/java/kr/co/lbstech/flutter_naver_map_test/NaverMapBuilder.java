@@ -25,9 +25,11 @@ import io.flutter.plugin.common.BinaryMessenger;
  */
 public class NaverMapBuilder implements NaverMapOptionSink {
     private final NaverMapOptions options = new NaverMapOptions();
-    private List initialMarkers;
     private int locationTrackingMode;
+
+    private List initialMarkers;
     private List initialPaths;
+    private List initialCircles;
 
     NaverMapController build(
             int id,
@@ -44,7 +46,8 @@ public class NaverMapBuilder implements NaverMapOptionSink {
                 activity,
                 options,
                 initialMarkers,
-                initialPaths);
+                initialPaths,
+                initialCircles);
         controller.init();
         controller.setLocationTrackingMode(locationTrackingMode);
         return controller;
@@ -189,11 +192,6 @@ public class NaverMapBuilder implements NaverMapOptionSink {
         this.locationTrackingMode = locationTrackingMode;
     }
 
-    @Override
-    public void setInitialPaths(List<Object> initialPaths) {
-        this.initialPaths = initialPaths;
-    }
-
     public void setInitialCameraPosition(Map<String, Object> cameraPosition){
         options.camera(Convert.toCameraPosition(cameraPosition));
     }
@@ -205,6 +203,13 @@ public class NaverMapBuilder implements NaverMapOptionSink {
 
     void setInitialMarkers(List initialMarkers) {
         this.initialMarkers = initialMarkers;
+    }
+
+    void setInitialCircles(List initialCircles) { this.initialCircles = initialCircles; }
+
+    @Override
+    public void setInitialPaths(List<Object> initialPaths) {
+        this.initialPaths = initialPaths;
     }
 
 }
