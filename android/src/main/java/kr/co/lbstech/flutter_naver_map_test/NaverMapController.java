@@ -350,7 +350,7 @@ public class NaverMapController implements
 
     private String treatCapture(Bitmap snapshot){
         try {
-            File file = File.createTempFile("", ".jpg", activity.getApplicationContext().getCacheDir());
+            File file = File.createTempFile("road", ".jpg", activity.getApplicationContext().getCacheDir());
             FileOutputStream fos = new FileOutputStream(file);
             snapshot.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
